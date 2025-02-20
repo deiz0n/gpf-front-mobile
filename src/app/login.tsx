@@ -2,14 +2,14 @@ import React from 'react';
 import {StyleSheet, TextInput, Text, View, ActivityIndicator} from 'react-native';
 import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
 
-import { ConfirmationButton } from './Button';
-import { LogoGPF } from './Logo';
-import { MainText } from './MainText';
-import { Link } from './Link';
+import { ConfirmationButton } from '../components/Button';
+import { LogoGPF } from '../components/Logo';
+import { MainText } from '../components/MainText';
+import { Link } from '../components/Link';
 import { customFonts } from '../hooks/useFonts';
 
 
-export const TextLabel = () => {
+export default function Login () {
     const [text, onChangeText] = React.useState('Useless Text');
     const [number, onChangeNumber] = React.useState('');
     const fontsLoaded = customFonts();
