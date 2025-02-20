@@ -54,7 +54,7 @@ export default function Login () {
 
                         <Link url='#' style={styles.recovery}>Esqueceu sua senha?</Link>
 
-                        {ConfirmationButton(() => console.log('Entrar'))}
+                        <ConfirmationButton onPress={() => console.log("Entrar")}/>
 
                         <Text style={styles.createAccount}>Não possui uma conta?</Text>
                         <Link url='#' style={{color: '#2A5C4E', }}>Cadastre-se</Link>
