@@ -15,7 +15,7 @@ export default function RegisterClinician() {
     const [formData, setFormData] = useState({
         name: '',
         surname: '',
-        gender: '',
+        gender: 'male',
         occupation: '',
         phoneNumber: '',
         email: '',

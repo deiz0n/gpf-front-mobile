@@ -28,7 +28,7 @@ export const EnumPicker = <T extends Record<string, string>>({
                         <Picker.Item 
                             key={key} 
                             label={value} 
-                            value={key} // usa o valor interno (ex: 'female') para o value
+                            value={key}
                         />
                     ))}
                 </Picker>
@@ -54,7 +54,8 @@ const styles = StyleSheet.create({
         backgroundColor: "#E5E5E5",
     },
     picker: {
-        height: 40,
+        height: 48,
         width: "100%",
+        flex: 1,
     },
 });

@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     },
     input: {
         flex: 1,
-        height: 40,
+        height: 48,
         fontSize: 14,
     },
     icon: {
