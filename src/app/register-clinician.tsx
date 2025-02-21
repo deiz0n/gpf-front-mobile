@@ -3,7 +3,7 @@ import { customFonts } from '../hooks/useFonts';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { LogoGPF } from '../components/Logo';
 import { MainText } from '../components/MainText';
-import InputField from '../components/InputField';
+import { InputField } from '../components/InputField';
 import { useState } from 'react';
 import { ConfirmationButton } from '../components/Button';
 import { PasswordInput } from '../components/PasswordInput';

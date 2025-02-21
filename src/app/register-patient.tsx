@@ -3,12 +3,13 @@ import { customFonts } from '../hooks/useFonts';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { LogoGPF } from '../components/Logo';
 import { MainText } from '../components/MainText';
-import InputField from '../components/InputField';
+import { InputField } from '../components/InputField';
 import { useState } from 'react';
 import { ConfirmationButton } from '../components/Button';
 import { PasswordInput } from '../components/PasswordInput';
 import { EnumPicker } from '../components/EnumPicker';
 import { GenderType } from '../../assets/enum';
+import { DatePicker } from '../components/DatePicker';
 
 export default function RegisterPatient() {
     const fontsLoaded = customFonts();
@@ -16,7 +17,7 @@ export default function RegisterPatient() {
         name: '',
         surname: '',
         gender: 'male',
-        birthDate: '',
+        birthDate: new Date().toISOString(),
         cpf: '',
         phoneNumber: '',
         address: '',
@@ -57,7 +58,10 @@ export default function RegisterPatient() {
                         selectedValue={formData.gender}
                         onValueChange={(text) => handleInputChange('gender', text)}
                     />
-                    <InputField label="Data de nascimento" onChangeText={(text) => handleInputChange('birthDate', text)} />
+                    <DatePicker
+                        label="Data de nascimento"
+                        onDateChange={(date) => handleInputChange("birthDate", date)}
+                    />
                     <InputField label="CPF" onChangeText={(text) => handleInputChange('cpf', text)} />
                     <InputField label="Número de telefone" onChangeText={(text) => handleInputChange('phoneNumber', text)} />
                     <InputField label="Estado" onChangeText={(text) => handleInputChange('address', text)} />

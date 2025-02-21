@@ -6,9 +6,11 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "tunnel": "expo start --tunnel"
   },
   "dependencies": {
+    "@react-native-community/datetimepicker": "8.2.0",
     "@react-native-picker/picker": "^2.11.0",
     "@react-navigation/native": "github:react-navigation/native",
     "expo": "~52.0.27",
