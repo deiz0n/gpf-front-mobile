@@ -4,7 +4,7 @@ import { Image, StyleSheet } from "react-native";
 export const LogoGPF = () => {
     return (
         <Image
-            source={require('../assets/images/logo.png')}
+            source={require('../../assets/images/logo.png')}
             style={styles.image}
         />
     );

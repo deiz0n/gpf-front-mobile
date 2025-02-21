@@ -1,14 +1,17 @@
 import React from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 
+interface ConfirmationButtonProps {
+    onPress: () => unknown;
+}
 
-export const ConfirmationButton = (action: () => void) => {
+export const ConfirmationButton: React.FC<ConfirmationButtonProps> = ({ onPress }) => {
     return (
-        <TouchableOpacity onPress={action} style={styles.button}>
+        <TouchableOpacity onPress={onPress} style={styles.button}>
             <Text style={styles.buttonText}>Entrar</Text>
         </TouchableOpacity>
     );
-}
+};
 
 const styles = StyleSheet.create({
     button: {
