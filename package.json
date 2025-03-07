@@ -13,6 +13,7 @@
     "@react-native-community/datetimepicker": "8.2.0",
     "@react-native-picker/picker": "^2.11.0",
     "@react-navigation/native": "github:react-navigation/native",
+    "axios": "^1.8.1",
     "expo": "~52.0.27",
     "expo-constants": "~17.0.7",
     "expo-font": "^13.0.3",
