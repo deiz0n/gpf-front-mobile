@@ -1,17 +1,17 @@
 import api from './api';
 
-export const registerPatient = async (userData: any) => {
+export const loginPatient = async (credentials: any) => {
   try {
-    const response = await api.post('/patient', userData);
+    const response = await api.post('/auth/patient', credentials);
     return response.data;
   } catch (error: any) {
     throw error.response ? error.response.data : error;
   }
 };
 
-export const loginPatient = async (credentials: any) => {
+export const loginClinician = async (credentials: any) => {
   try {
-    const response = await api.post('/auth/patient', credentials);
+    const response = await api.post('/auth/clinician', credentials);
     return response.data;
   } catch (error: any) {
     throw error.response ? error.response.data : error;

@@ -7,14 +7,11 @@ import { LogoGPF } from '../components/Logo';
 import { MainText } from '../components/MainText';
 import { Link } from '../components/Link';
 import { customFonts } from '../hooks/useFonts';
-import { useLoginRequest } from '../hooks/useLoginRequest';
-
+import { useAuth } from '../hooks/useLoginRequest';
 
 export default function Login() {
-    const [text, onChangeText] = React.useState('Useless Text');
-    const [number, onChangeNumber] = React.useState('');
     const fontsLoaded = customFonts();
-    const { postData, loading, error, response } = useLoginRequest("https://blackwell.onrender.com/auth/patient");
+    const { handlePatientLogin, error } = useAuth();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -22,13 +19,14 @@ export default function Login() {
         return <ActivityIndicator size="large" />;
     }
 
-    const handleLogin = async () => {
-        if (!email || !password) return;
-        const requestLogin = { email, password };
-        await postData(requestLogin);
-        setEmail("");
-        setPassword("");
-    }
+    const onLogin = async () => {    
+        const success = await handlePatientLogin({ email, password });
+        if (success) {
+          console.log('Login realizado com sucesso');
+        } else {
+          console.error('Erro ao fazer login:', error);
+        }
+    };
 
     return (
         <SafeAreaProvider>
@@ -67,7 +65,7 @@ export default function Login() {
 
                     <Link url='#' style={styles.recovery}>Esqueceu sua senha?</Link>
 
-                    <ConfirmationButton onPress={() => handleLogin()} />
+                    <ConfirmationButton onPress={() => onLogin()} />
 
                     <Text style={styles.createAccount}>Não possui uma conta?</Text>
                     <Link url='#' style={{ color: '#2A5C4E', }}>Cadastre-se</Link>
