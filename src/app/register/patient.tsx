@@ -1,16 +1,16 @@
 import { ActivityIndicator, View, StyleSheet, ScrollView, Alert } from 'react-native';
-import { customFonts } from '../hooks/useFonts';
+import { customFonts } from '../../hooks/useFonts';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import { LogoGPF } from '../components/Logo';
-import { MainText } from '../components/MainText';
-import { InputField } from '../components/InputField';
+import { LogoGPF } from '../../components/Logo';
+import { MainText } from '../../components/MainText';
+import { InputField } from '../../components/InputField';
 import { useEffect, useState } from 'react';
-import { ConfirmationButton } from '../components/Button';
-import { PasswordInput } from '../components/PasswordInput';
-import { EnumPicker } from '../components/EnumPicker';
-import { GenderType } from '../../assets/enum';
-import { DatePicker } from '../components/DatePicker';
-import { usePatient } from '../hooks/usePatientRequests';
+import { ConfirmationButton } from '../../components/Button';
+import { PasswordInput } from '../../components/PasswordInput';
+import { EnumPicker } from '../../components/EnumPicker';
+import { GenderType } from '../../../assets/enum';
+import { DatePicker } from '../../components/DatePicker';
+import { usePatient } from '../../hooks/usePatientRequests';
 import { useRouter } from 'expo-router';
 
 export default function RegisterPatient() {
@@ -18,16 +18,16 @@ export default function RegisterPatient() {
     const router = useRouter();
     const { loading, error, handleRegister } = usePatient();
     const [formData, setFormData] = useState({
-        name: undefined,
-        surname: undefined,
+        name: "",
+        surname: "",
         gender: 'male',
         birthDate: new Date().toISOString(),
-        cpf: undefined,
-        phoneNumber: undefined,
-        address: undefined,
-        city: undefined,
-        state: undefined,
-        email: undefined,
+        cpf: "",
+        phoneNumber: "",
+        address: "",
+        city: "",
+        state: "",
+        email: "",
         password: '',
     });
 
@@ -44,22 +44,9 @@ export default function RegisterPatient() {
                 Alert.alert("Sucesso", "Paciente registrado com sucesso!", [
                     {
                         text: "OK",
-                        onPress: () => router.push('/login'),
+                        onPress: () => router.push('/login/patient'),
                     }
                 ]);
-                setFormData({
-                    name: undefined,
-                    surname: undefined,
-                    gender: 'male',
-                    birthDate: new Date().toISOString(),
-                    cpf: undefined,
-                    phoneNumber: undefined,
-                    address: undefined,
-                    city: undefined,
-                    state: undefined,
-                    email: undefined,
-                    password: '',
-                });
             }
         } catch (error) {
             Alert.alert("Erro", error?.toString() || "Ocorreu um erro ao registrar o paciente.");

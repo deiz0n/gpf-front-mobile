@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TextInput, StyleSheet, TextInputProps } from 'react-native';
 
 interface InputFieldProps extends TextInputProps {
-    label: string;
+    label: string | undefined;
 }
 
 export const InputField: React.FC<InputFieldProps> = ({ label, ...textInputProps }) => {

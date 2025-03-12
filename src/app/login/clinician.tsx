@@ -68,7 +68,7 @@ export default function Login() {
           <ConfirmationButton onPress={() => handleSubmit()} />
 
           <Text style={styles.createAccount}>Não possui uma conta?</Text>
-          <Link url="/register-clinician" style={{ color: "#2A5C4E" }}>
+          <Link url="/register/clinician" style={{ color: "#2A5C4E" }}>
             Cadastre-se
           </Link>
         </View>
