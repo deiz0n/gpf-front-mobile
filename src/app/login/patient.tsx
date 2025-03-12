@@ -33,7 +33,7 @@ export default function Login() {
       const success = await handlePatientLogin({ email, password });
       if (success) {
         console.log("Sucesso", "Paciente logado com sucesso!");
-        Alert.alert("Sucesso", "Paciente registrado com sucesso!");
+        Alert.alert("Sucesso", "Paciente logado com sucesso!");
       }
     } catch (error) {
       Alert.alert(

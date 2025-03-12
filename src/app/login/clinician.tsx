@@ -33,7 +33,7 @@ export default function Login() {
       const success = await handleClinicianLogin({ email, password });
       if (success) {
         console.log("Sucesso", "Clínico logado com sucesso!");
-        Alert.alert("Sucesso", "Clínico registrado com sucesso!");
+        Alert.alert("Sucesso", "Clínico logado com sucesso!");
       }
     } catch (error) {
       Alert.alert(
