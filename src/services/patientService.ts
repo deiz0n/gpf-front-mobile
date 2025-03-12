@@ -53,6 +53,7 @@ export const register = async (userData: any) => {
   }
 };
 
+// NÃO SERÁ USADO NO FRONT-END
 export const update = async (id: string, userData: any) => {
   try {
     const response = await api.put(`${ROUTE_URL}/${id}`, userData);
@@ -62,6 +63,7 @@ export const update = async (id: string, userData: any) => {
   }
 };
 
+// NÃO SERÁ USADO NO FRONT-END
 export const remove = async (id: string) => {
   try {
     const response = await api.delete(`${ROUTE_URL}/${id}`);

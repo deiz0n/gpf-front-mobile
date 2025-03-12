@@ -1,29 +1,33 @@
-import { ActivityIndicator, View, StyleSheet, ScrollView } from 'react-native';
+import { ActivityIndicator, View, StyleSheet, ScrollView, Alert } from 'react-native';
 import { customFonts } from '../hooks/useFonts';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { LogoGPF } from '../components/Logo';
 import { MainText } from '../components/MainText';
 import { InputField } from '../components/InputField';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ConfirmationButton } from '../components/Button';
 import { PasswordInput } from '../components/PasswordInput';
 import { EnumPicker } from '../components/EnumPicker';
 import { GenderType } from '../../assets/enum';
 import { DatePicker } from '../components/DatePicker';
+import { usePatient } from '../hooks/usePatientRequests';
+import { useRouter } from 'expo-router';
 
 export default function RegisterPatient() {
     const fontsLoaded = customFonts();
+    const router = useRouter();
+    const { loading, error, handleRegister } = usePatient();
     const [formData, setFormData] = useState({
-        name: '',
-        surname: '',
+        name: undefined,
+        surname: undefined,
         gender: 'male',
         birthDate: new Date().toISOString(),
-        cpf: '',
-        phoneNumber: '',
-        address: '',
-        city: '',
-        state: '',
-        email: '',
+        cpf: undefined,
+        phoneNumber: undefined,
+        address: undefined,
+        city: undefined,
+        state: undefined,
+        email: undefined,
         password: '',
     });
 
@@ -31,9 +35,44 @@ export default function RegisterPatient() {
         setFormData((prev) => ({ ...prev, [field]: value }));
     };
 
-    const handleSubmit = () => {
-        console.log('Dados do formulário:', formData);
+    const handleSubmit = async () => {
+        try {
+            const response = await handleRegister(formData);
+
+            if (response) {
+                console.log("Sucesso", "Paciente registrado com sucesso!")
+                Alert.alert("Sucesso", "Paciente registrado com sucesso!", [
+                    {
+                        text: "OK",
+                        onPress: () => router.push('/login'),
+                    }
+                ]);
+                setFormData({
+                    name: undefined,
+                    surname: undefined,
+                    gender: 'male',
+                    birthDate: new Date().toISOString(),
+                    cpf: undefined,
+                    phoneNumber: undefined,
+                    address: undefined,
+                    city: undefined,
+                    state: undefined,
+                    email: undefined,
+                    password: '',
+                });
+            }
+        } catch (error) {
+            Alert.alert("Erro", error?.toString() || "Ocorreu um erro ao registrar o paciente.");
+            console.log("ERRO:", error)
+        }
     };
+
+    useEffect(() => {
+        if (error) {
+            Alert.alert("Erro", error);
+            console.log("ERRO:", error)
+        }
+    }, [error]);
 
     if (!fontsLoaded) {
         return <ActivityIndicator size="large" />;
@@ -50,8 +89,16 @@ export default function RegisterPatient() {
                         "Insira as informações abaixo para registrar uma conta"
                     )}
 
-                    <InputField label="Nome" onChangeText={(text) => handleInputChange('name', text)} />
-                    <InputField label="Sobrenome" onChangeText={(text) => handleInputChange('surname', text)} />
+                    <InputField
+                        label="Nome"
+                        value={formData.name}
+                        onChangeText={(text) => handleInputChange('name', text)}
+                    />
+                    <InputField
+                        label="Sobrenome"
+                        value={formData.surname}
+                        onChangeText={(text) => handleInputChange('surname', text)}
+                    />
                     <EnumPicker
                         label="Selecione seu gênero"
                         enumValues={GenderType}
@@ -62,17 +109,44 @@ export default function RegisterPatient() {
                         label="Data de nascimento"
                         onDateChange={(date) => handleInputChange("birthDate", date)}
                     />
-                    <InputField label="CPF" onChangeText={(text) => handleInputChange('cpf', text)} />
-                    <InputField label="Número de telefone" onChangeText={(text) => handleInputChange('phoneNumber', text)} />
-                    <InputField label="Estado" onChangeText={(text) => handleInputChange('address', text)} />
-                    <InputField label="Cidade" onChangeText={(text) => handleInputChange('city', text)} />
-                    <InputField label="Rua" onChangeText={(text) => handleInputChange('state', text)} />
-                    <InputField label="Email" onChangeText={(text) => handleInputChange('email', text)} />
+                    <InputField
+                        label="CPF"
+                        value={formData.cpf}
+                        onChangeText={(text) => handleInputChange('cpf', text)}
+                    />
+                    <InputField
+                        label="Número de telefone"
+                        value={formData.phoneNumber}
+                        onChangeText={(text) => handleInputChange('phoneNumber', text)}
+                    />
+                    <InputField
+                        label="Estado"
+                        value={formData.state}
+                        onChangeText={(text) => handleInputChange('state', text)}
+                    />
+                    <InputField
+                        label="Cidade"
+                        value={formData.city}
+                        onChangeText={(text) => handleInputChange('city', text)}
+                    />
+                    <InputField
+                        label="Rua"
+                        value={formData.address}
+                        onChangeText={(text) => handleInputChange('address', text)}
+                    />
+                    <InputField
+                        label="Email"
+                        value={formData.email}
+                        onChangeText={(text) => handleInputChange('email', text)}
+                    />
                     <PasswordInput
                         label="Senha"
                         value={formData.password}
                         onChangeText={(text) => handleInputChange('password', text)}
                     />
+
+                    {loading && <ActivityIndicator size="large" color="#0000ff" />}
+
                     <ConfirmationButton onPress={handleSubmit} />
                 </ScrollView>
             </SafeAreaView>
@@ -85,10 +159,9 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     contentContainer: {
-        flexGrow: 1, 
-        alignItems: 'center', 
+        flexGrow: 1,
+        alignItems: 'center',
         paddingHorizontal: 20,
         paddingVertical: 20,
     },
 });
-
