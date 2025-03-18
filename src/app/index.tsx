@@ -8,9 +8,10 @@ export default function App () {
         <View style={styles.container}>
             <Text style={styles.text}>Index</Text>
             <Link href={"/user-type"} style={styles.textLink}>Ir para Tipo de usuário</Link>
-            <Link href={"/login"} style={styles.textLink}>Ir para login</Link>
-            <Link href={"/register-clinician"} style={styles.textLink}>Ir para cadastro de clínico</Link>
-            <Link href={"/register-patient"} style={styles.textLink}>Ir para cadastro de paciente</Link>
+            <Link href={"/login/patient"} style={styles.textLink}>Ir para login de paciente</Link>
+            <Link href={"/login/clinician"} style={styles.textLink}>Ir para login de clínico</Link>
+            <Link href={"/register/clinician"} style={styles.textLink}>Ir para cadastro de clínico</Link>
+            <Link href={"/register/patient"} style={styles.textLink}>Ir para cadastro de paciente</Link>
         </View>
     );
 };

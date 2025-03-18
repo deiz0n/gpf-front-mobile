@@ -1,5 +1,6 @@
 import React from "react";
-import { StyleSheet, Text, TextStyle, TouchableOpacity, Linking } from "react-native";
+import { StyleSheet, Text, TextStyle, TouchableOpacity } from "react-native";
+import { useRouter } from 'expo-router';
 
 interface LinkProps {
     url: string;
@@ -8,8 +9,10 @@ interface LinkProps {
 }
 
 export const Link = ({ url, children, style }: LinkProps) => {
+    const router = useRouter();
+
     const handlePress = () => {
-        Linking.openURL(url);
+        router.push(url)
     };
 
     return (

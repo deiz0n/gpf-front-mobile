@@ -26,13 +26,13 @@ export default function UserType() {
                             'Selecione o tipo de usuário para continuar'
                         )}
 
-                        <Pressable style={styles.button} onPress={() => router.push('/login')}>
+                        <Pressable style={styles.button} onPress={() => router.push('/login/patient')}>
                             <Image source={require('../../assets/images/user-type/paciente.png')} style={styles.icon} />
                         </Pressable>
 
                         <Text style={styles.text}>Paciente</Text>
 
-                        <Pressable style={styles.button} onPress={() => router.push('/login')}>
+                        <Pressable style={styles.button} onPress={() => router.push('/login/clinician')}>
                             <Image source={require('../../assets/images/user-type/clinico.png')} style={styles.icon} />
                         </Pressable>
 
