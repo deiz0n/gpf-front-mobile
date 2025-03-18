@@ -12,6 +12,8 @@ export default function App () {
             <Link href={"/login/clinician"} style={styles.textLink}>Ir para login de clínico</Link>
             <Link href={"/register/clinician"} style={styles.textLink}>Ir para cadastro de clínico</Link>
             <Link href={"/register/patient"} style={styles.textLink}>Ir para cadastro de paciente</Link>
+            <Link href={"/dashboard/patient"} style={styles.textLink}>Ir para dashboard de paciente</Link>
+            <Link href={"/dashboard/clinician"} style={styles.textLink}>Ir para dashboard de clínico</Link>
         </View>
     );
 };
