@@ -11,8 +11,8 @@ export const useAuth = () => {
     setLoading(true);
     try {
       setError(null);
-      const { token, user } = await loginPatient(credentials);
-      setAuthToken(token);
+      const { access_token, user } = await loginPatient(credentials);
+      setAuthToken(access_token);
       setUser(user);
       return true;
     } catch (error: any) {
@@ -30,8 +30,8 @@ export const useAuth = () => {
     setLoading(true);
     try {
       setError(null);
-      const { token, user } = await loginClinician(credentials);
-      setAuthToken(token);
+      const { access_token, user } = await loginClinician(credentials);
+      setAuthToken(access_token);
       setUser(user);
       return true;
     } catch (error: any) {
