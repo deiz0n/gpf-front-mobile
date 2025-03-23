@@ -1,27 +1,7 @@
-import { View, StyleSheet, Text, SafeAreaView } from "react-native";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import { Header } from "../../../components/Dashboard/Header";
+import AboutScreen from "../../../components/Dashboard/AboutScreen";
 
 export default function Sobre() {
   return (
-    <SafeAreaProvider>
-      <Header />
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.text}>Sobre</Text>
-      </SafeAreaView>
-    </SafeAreaProvider>
+    <AboutScreen />
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#fff",
-  },
-  text: {
-    fontSize: 24,
-    color: "#000",
-  },
-});
