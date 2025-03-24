@@ -74,10 +74,6 @@ export default function MedicalRecordsList() {
     fetchRecords();
   }, [userId]);
 
-  if (loading) {
-    return <ActivityIndicator size="large" color="#2A5C4E" />;
-  }
-
   if (error) {
     Alert.alert("Erro", error);
   }
@@ -92,18 +88,23 @@ export default function MedicalRecordsList() {
       <Header />
       <SafeAreaView style={styles.container}>
         <Text style={styles.title}>Fichas</Text>
-
-        {records.length > 0 ? (
-          records.map((record) => (
-            <View key={record.id as string} style={styles.card}>
-              <Text style={styles.recordType}>{record.type}</Text>
-              <TouchableOpacity style={styles.viewButton} onPress={handleView}>
-                <Text style={styles.viewButtonText}>Visualizar</Text>
-              </TouchableOpacity>
-            </View>
-          ))
+        {loading ? (
+          <ActivityIndicator size="large" color="#2A5C4E"/>
         ) : (
-          <Text style={styles.noRecords}>Nenhuma ficha criada.</Text>
+          <>
+            {records.length > 0 ? (
+              records.map((record) => (
+                <View key={record.id as string} style={styles.card}>
+                  <Text style={styles.recordType}>{record.type}</Text>
+                  <TouchableOpacity style={styles.viewButton} onPress={handleView}>
+                    <Text style={styles.viewButtonText}>Visualizar</Text>
+                  </TouchableOpacity>
+                </View>
+              ))
+            ) : (
+              <Text style={styles.noRecords}>Nenhuma ficha criada.</Text>
+            )}
+          </>
         )}
       </SafeAreaView>
     </SafeAreaProvider>
