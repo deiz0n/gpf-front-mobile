@@ -82,7 +82,7 @@ export default function PendingAuthorizations() {
           <ActivityIndicator size="large" color="#2A5C4E" />
         ) : pendingUsers.length === 0 ? (
           <Text style={styles.noRequests}>
-            Nenhum prontuário foi compartilhado com você
+            Nenhuma solicitação pendente.
           </Text>
         ) : (
           <ScrollView contentContainerStyle={styles.scrollContainer}>

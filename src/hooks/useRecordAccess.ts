@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getPendingAuthorization, updateAuthorization } from "../services/recordAccessService";
+import { getPendingAuthorization, updateAuthorization, getRecordsSharedWithMe } from "../services/recordAccessService";
 
 export const useRecordAccess = () => {
   const [data, setData] = useState<any | null>(null);
@@ -11,6 +11,22 @@ export const useRecordAccess = () => {
     try {
       setError(null);
       const response = await getPendingAuthorization();
+      setData(response);
+      return response;
+    } catch (error: any) {
+      console.log(error);
+      setError("Erro ao buscar autorizações pendentes");
+      return false;
+    } finally {
+      setLoading(false);
+    }
+
+  };
+  const handleRecordsSharedWithMe = async () => {
+    setLoading(true);
+    try {
+      setError(null);
+      const response = await getRecordsSharedWithMe();
       setData(response);
       return response;
     } catch (error: any) {
@@ -43,5 +59,6 @@ export const useRecordAccess = () => {
     error,
     handlePendingAuthorization,
     handleAuthorize,
+    handleRecordsSharedWithMe
   };
 };

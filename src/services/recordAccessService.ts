@@ -11,6 +11,15 @@ export const getPendingAuthorization = async () => {
   }
 };
 
+export const getRecordsSharedWithMe = async () => {
+  try {
+    const response = await api.get(`${ROUTE_URL}/get-records-shared-with-me`);
+    return response.data;
+  } catch (error: any) {
+    throw error.response ? error.response.data : error;
+  }
+};
+
 export const updateAuthorization = async (
   userId: string,
   recordType: string,

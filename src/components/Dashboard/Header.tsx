@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Image, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 
@@ -11,6 +11,7 @@ export const Header = () => {
   };
 
   const onNotificationsPress = () => {
+    Alert.alert("Notificações", "Não há implementação na API. Ocultar?");
     console.log("Não implementado");
   }
 

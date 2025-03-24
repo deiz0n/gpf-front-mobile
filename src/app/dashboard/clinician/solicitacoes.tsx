@@ -1,14 +1,82 @@
-import { StyleSheet, Text, SafeAreaView } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  TouchableOpacity,
+  ScrollView,
+  Alert,
+} from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Header } from "../../../components/Dashboard/Header";
+import { useRecordAccess } from "../../../hooks/useRecordAccess";
 
 export default function Solicitacoes() {
+  const { loading, error, handleRecordsSharedWithMe } = useRecordAccess();
+  const [records, setRecords] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchRecords = async () => {
+      const response = await handleRecordsSharedWithMe();
+      if (response) {
+        setRecords(response);
+      }
+    };
+    fetchRecords();
+  }, []);
+
+  const handleViewRecord = (recordType: string, recordId: string) => {
+    Alert.alert(
+      "Visualizar",
+      `Não implementado. Record Type: ${recordType}\nRecord ID: ${recordId}`
+    );
+  };
+
+  const handleSubmit = () => {
+    Alert.alert("Erro", `Não implementado`);
+  };
+
   return (
     <SafeAreaProvider>
       <Header />
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.text}>Solicitações</Text>
-      </SafeAreaView>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Fichas compartilhadas</Text>
+          <TouchableOpacity onPress={handleSubmit}>
+            <Text style={styles.SubmitButton}>Solicitar</Text>
+          </TouchableOpacity>
+        </View>
+
+        {loading && <ActivityIndicator size="large" color="#2A5C4E" />}
+
+        {!loading && records.length === 0 && (
+          <Text style={styles.noData}>Nenhuma ficha compartilhada.</Text>
+        )}
+
+        {!loading && records.length > 0 && (
+          <ScrollView style={{ width: "100%" }}>
+            {records.map((item) => (
+              <View key={item.recordId} style={styles.card}>
+                <Text style={styles.recordType}>{item.recordType}</Text>
+                <Text style={styles.patientName}>
+                  {item.name} {item.surname}
+                </Text>
+                <TouchableOpacity
+                  style={styles.viewButton}
+                  onPress={() =>
+                    handleViewRecord(item.recordType, item.recordId)
+                  }
+                >
+                  <Text style={styles.viewButtonText}>Visualizar</Text>
+                </TouchableOpacity>
+              </View>
+            ))}
+          </ScrollView>
+        )}
+
+        {error && !loading && <Text style={styles.errorText}>{error}</Text>}
+      </View>
     </SafeAreaProvider>
   );
 }
@@ -16,12 +84,69 @@ export default function Solicitacoes() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "#FFF",
+    padding: 16,
   },
-  text: {
-    fontSize: 24,
-    color: "#000",
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  noData: {
+    textAlign: "center",
+    fontSize: 16,
+    color: "#555",
+    marginTop: 10,
+  },
+  errorText: {
+    textAlign: "center",
+    color: "red",
+    marginTop: 10,
+  },
+  card: {
+    backgroundColor: "#F5F5F5",
+    borderRadius: 10,
+    padding: 16,
+    marginBottom: 12,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  recordType: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 4,
+  },
+  patientName: {
+    fontSize: 16,
+    color: "#333",
+    marginBottom: 12,
+  },
+  viewButton: {
+    alignSelf: "flex-end",
+    backgroundColor: "#2A5C4E",
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 8,
+  },
+  viewButtonText: {
+    color: "#FFF",
+    fontWeight: "bold",
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 20,
+    paddingHorizontal: 10,
+  },
+  SubmitButton: {
+    fontSize: 16,
+    backgroundColor: "#2A5C4E",
+    padding: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    color: "white",
+    fontWeight: "bold",
   },
 });
