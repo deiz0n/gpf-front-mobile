@@ -2,7 +2,7 @@ import api from "./api";
 
 const ROUTE_URL = "/clinicians";
 
-export const fetch = async (direction?: string, page?: number, orderBy?: number) => {
+export const fetch = async (page?: number, direction?: string, orderBy?: number) => {
   try {
     const response = await api.get(ROUTE_URL, {
       params: {

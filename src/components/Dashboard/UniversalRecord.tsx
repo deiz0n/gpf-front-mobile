@@ -66,6 +66,10 @@ export default function UniversalRecord({
     Alert.alert("Aviso", "Funcionalidade não implementada.");
   };
 
+  const formatValue = (value: any) => {
+    return value && value !== "" ? value : "Nenhum cadastrado";
+  };
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -106,25 +110,25 @@ export default function UniversalRecord({
         <Text style={styles.label}>
           Profissão:{" "}
           <Text style={styles.value}>
-            {recordData.universalMedicalRecord.profession}
+            {formatValue(recordData.universalMedicalRecord.profession)}
           </Text>
         </Text>
         <Text style={styles.label}>
           Estado Civil:{" "}
           <Text style={styles.value}>
-            {recordData.universalMedicalRecord.maritalStatus}
+            {formatValue(recordData.universalMedicalRecord.maritalStatus)}
           </Text>
         </Text>
         <Text style={styles.label}>
           Altura:{" "}
           <Text style={styles.value}>
-            {recordData.universalMedicalRecord.height}
+            {formatValue(recordData.universalMedicalRecord.height)}
           </Text>
         </Text>
         <Text style={styles.label}>
           Peso:{" "}
           <Text style={styles.value}>
-            {recordData.universalMedicalRecord.weight}
+            {formatValue(recordData.universalMedicalRecord.weight)}
           </Text>
         </Text>
         <Text style={styles.label}>

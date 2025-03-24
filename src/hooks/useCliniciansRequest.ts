@@ -15,15 +15,15 @@ export const useClinician = () => {
   const [error, setError] = useState<string | null>(null);
 
   const handleFetch = async (
-    direction?: string,
     page?: number,
+    direction?: string,
     orderBy?: number
   ) => {
     setLoading(true);
     try {
-      const response = await fetch(direction, page, orderBy);
-      setData(response);
       setError(null);
+      const response = await fetch(page, direction, orderBy);
+      setData(response);
       return response;
     } catch (error: any) {
       setError(
