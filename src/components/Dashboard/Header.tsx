@@ -1,18 +1,24 @@
 import React from "react";
 import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 
-interface HeaderProps {
-  onNotificationPress?: () => void;
-  onProfilePress?: () => void;
-}
+export const Header = () => {
+  const router = useRouter();
+  
+  const onProfilePress = () => {
+    router.push("/profile");
+  };
 
-export const Header: React.FC<HeaderProps> = ({ onNotificationPress, onProfilePress }) => {
+  const onNotificationsPress = () => {
+    console.log("Não implementado");
+  }
+
   return (
     <View style={styles.container}>
       <Image source={require("../../../assets/images/logo.png")} style={styles.logo} />
       <View style={styles.iconsContainer}>
-        <TouchableOpacity onPress={onNotificationPress}>
+        <TouchableOpacity onPress={onNotificationsPress}>
           <MaterialIcons name="notifications" size={28} color="gray" />
         </TouchableOpacity>
         <TouchableOpacity onPress={onProfilePress}>

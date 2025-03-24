@@ -10,12 +10,14 @@ import { customFonts } from "../../hooks/useFonts";
 import { useAuth } from "../../hooks/useLoginRequest";
 import { PasswordInput } from "../../components/PasswordInput";
 import { InputField } from "../../components/InputField";
+import { useRouter } from "expo-router";
 
 export default function Login() {
   const fontsLoaded = customFonts();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { error, loading, handlePatientLogin } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
     if (error) {
@@ -33,7 +35,9 @@ export default function Login() {
       const success = await handlePatientLogin({ email, password });
       if (success) {
         console.log("Sucesso", "Paciente logado com sucesso!");
-        Alert.alert("Sucesso", "Paciente logado com sucesso!");
+        Alert.alert("Sucesso", "Paciente logado com sucesso!", [
+          { text: "OK", onPress: () => router.replace("/dashboard/patient") },
+        ]);
       }
     } catch (error) {
       Alert.alert(
