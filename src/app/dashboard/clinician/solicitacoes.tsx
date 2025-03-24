@@ -11,10 +11,12 @@ import {
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Header } from "../../../components/Dashboard/Header";
 import { useRecordAccess } from "../../../hooks/useRecordAccess";
+import { useRouter } from "expo-router";
 
 export default function Solicitacoes() {
   const { loading, error, handleRecordsSharedWithMe } = useRecordAccess();
   const [records, setRecords] = useState<any[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchRecords = async () => {
@@ -34,7 +36,7 @@ export default function Solicitacoes() {
   };
 
   const handleSubmit = () => {
-    Alert.alert("Erro", `Não implementado`);
+    router.push("/request-access")
   };
 
   return (

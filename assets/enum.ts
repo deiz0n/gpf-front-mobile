@@ -4,3 +4,9 @@ export enum GenderType {
     nonbinary = "Não-binário",
     other = "Outro",
 }
+
+export enum RecordType {
+  Cardio = "Cardiorrespiratório",
+  Neurofunctional = "Neurofuncional",
+  Trauma = "Trauma Ortopédico",
+}

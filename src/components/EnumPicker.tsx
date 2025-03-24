@@ -2,9 +2,9 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 
-interface EnumPickerProps<T> {
+interface EnumPickerProps<T extends Record<string, string>> {
     label: string;
-    enumValues: T; 
+    enumValues: T;
     selectedValue: string;
     onValueChange: (value: string) => void;
 }
@@ -15,6 +15,10 @@ export const EnumPicker = <T extends Record<string, string>>({
     selectedValue,
     onValueChange,
 }: EnumPickerProps<T>) => {
+    const enumKeys = Object.keys(enumValues).filter(
+        (key) => typeof enumValues[key as keyof T] === "string"
+    );
+
     return (
         <View style={styles.container}>
             <Text style={styles.label}>{label}</Text>
@@ -23,11 +27,12 @@ export const EnumPicker = <T extends Record<string, string>>({
                     selectedValue={selectedValue}
                     onValueChange={onValueChange}
                     style={styles.picker}
+                    mode="dropdown"
                 >
-                    {Object.entries(enumValues).map(([key, value]) => (
-                        <Picker.Item 
-                            key={key} 
-                            label={value} 
+                    {enumKeys.map((key) => (
+                        <Picker.Item
+                            key={key}
+                            label={enumValues[key as keyof T]}
                             value={key}
                         />
                     ))}
@@ -52,10 +57,10 @@ const styles = StyleSheet.create({
         borderColor: "#ccc",
         borderRadius: 8,
         backgroundColor: "#E5E5E5",
+        minHeight: 48,
     },
     picker: {
-        height: 48,
+        height: 50,
         width: "100%",
-        flex: 1,
     },
 });

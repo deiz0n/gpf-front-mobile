@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getPendingAuthorization, updateAuthorization, getRecordsSharedWithMe } from "../services/recordAccessService";
+import { getPendingAuthorization, updateAuthorization, getRecordsSharedWithMe, patchRequestAccess } from "../services/recordAccessService";
 
 export const useRecordAccess = () => {
   const [data, setData] = useState<any | null>(null);
@@ -38,6 +38,23 @@ export const useRecordAccess = () => {
     }
   };
 
+  const handleRequestAccess = async (userId: string, recordType: string) => {
+    setLoading(true);
+    try {
+      setError(null);
+      const success = await patchRequestAccess(userId, recordType);
+      return success;
+    } catch (error: any) {
+      setError(
+        `Code: ${error.statusCode} | Error: ${error.error} | Message: ${error.message}` ||
+          "Erro ao buscar paciente por ID"
+      );
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleAuthorize = async (userId: string, recordType: string, action: "accept" | "reject") => {
     setLoading(true);
     try {
@@ -59,6 +76,7 @@ export const useRecordAccess = () => {
     error,
     handlePendingAuthorization,
     handleAuthorize,
-    handleRecordsSharedWithMe
+    handleRecordsSharedWithMe,
+    handleRequestAccess
   };
 };

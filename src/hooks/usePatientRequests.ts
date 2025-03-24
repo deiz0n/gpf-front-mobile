@@ -57,9 +57,9 @@ export const usePatient = () => {
   const handleGetByCpf = async (cpf: string) => {
     setLoading(true);
     try {
+      setError(null);
       const response = await getByCpf(cpf);
       setData(response);
-      setError(null);
       return response;
     } catch (error: any) {
       setError(

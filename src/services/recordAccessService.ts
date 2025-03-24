@@ -20,6 +20,20 @@ export const getRecordsSharedWithMe = async () => {
   }
 };
 
+export const patchRequestAccess = async (
+  patientId: string,
+  recordType: string
+) => {
+  try {
+    const response = await api.patch(
+      `${ROUTE_URL}/request-access-by-patient-id/${patientId}?recordType=${recordType}`
+    );
+    return response.status === 200;
+  } catch (error: any) {
+    throw error.response ? error.response.data : error;
+  }
+};
+
 export const updateAuthorization = async (
   userId: string,
   recordType: string,
