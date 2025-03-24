@@ -1,38 +1,54 @@
-import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-// import { registerRootComponent } from 'expo';
-import { Link } from 'expo-router';
+import React, { useEffect, useState } from "react";
+import { View, ActivityIndicator } from "react-native";
+import * as SecureStore from "expo-secure-store";
+import { setAuthToken } from "../services/api";
+import { Redirect } from "expo-router";
 
-export default function App () {
-    return (
-        <View style={styles.container}>
-            <Text style={styles.text}>Index</Text>
-            <Link href={"/user-type"} style={styles.textLink}>Ir para Tipo de usuário</Link>
-            <Link href={"/login/patient"} style={styles.textLink}>Ir para login de paciente</Link>
-            <Link href={"/login/clinician"} style={styles.textLink}>Ir para login de clínico</Link>
-            <Link href={"/register/clinician"} style={styles.textLink}>Ir para cadastro de clínico</Link>
-            <Link href={"/register/patient"} style={styles.textLink}>Ir para cadastro de paciente</Link>
-            <Link href={"/dashboard/patient"} style={styles.textLink}>Ir para dashboard de paciente</Link>
-            <Link href={"/dashboard/clinician"} style={styles.textLink}>Ir para dashboard de clínico</Link>
-        </View>
-    );
-};
+export default function App() {
+  const [loadingInit, setLoadingInit] = useState(true);
+  const [redirectTo, setRedirectTo] = useState<string | null>(null);
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#fff',
-    },
-    text: {
-        fontSize: 24,
-        color: '#000',
-    },
-    textLink: {
-        fontSize: 20,
-        color: 'blue',
-    }
-});
+  useEffect(() => {
+    const loadUserData = async () => {
+      try {
+        const token = await SecureStore.getItemAsync("access_token");
+        const userData = await SecureStore.getItemAsync("user_id");
+        const role = await SecureStore.getItemAsync("role");
 
-// registerRootComponent(App);
+        if (token && userData && role) {
+          setAuthToken(token);
+
+          switch (role) {
+            case "PATIENT":
+              setRedirectTo("/dashboard/patient");
+              break;
+            case "CLINICIAN":
+              setRedirectTo("/dashboard/clinician");
+              break;
+            default:
+              setRedirectTo("/user-type");
+          }
+        } else {
+          setRedirectTo("/user-type");
+        }
+      } catch (error) {
+        console.log("Erro ao carregar os dados do usuário", error);
+        setRedirectTo("/user-type");
+      } finally {
+        setLoadingInit(false);
+      }
+    };
+
+    loadUserData();
+  }, []);
+
+  if (redirectTo) {
+    return <Redirect href={redirectTo} />;
+  }
+
+  return (
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <ActivityIndicator size="large" />
+    </View>
+  );
+}

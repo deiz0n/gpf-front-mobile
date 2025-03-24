@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { loginPatient, loginClinician } from "../services/authService";
 import { setAuthToken } from "../services/api";
+import * as SecureStore from "expo-secure-store";
 
 export const useAuth = () => {
-  const [user, setUser] = useState<any | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -11,9 +11,12 @@ export const useAuth = () => {
     setLoading(true);
     try {
       setError(null);
-      const { access_token, user } = await loginPatient(credentials);
+      const { access_token, user_id, role } = await loginPatient(credentials);
       setAuthToken(access_token);
-      setUser(user);
+
+      await SecureStore.setItemAsync('access_token', access_token);
+      await SecureStore.setItemAsync('user_id', user_id);
+      await SecureStore.setItemAsync('role', role);
       return true;
     } catch (error: any) {
       setError(
@@ -30,9 +33,12 @@ export const useAuth = () => {
     setLoading(true);
     try {
       setError(null);
-      const { access_token, user } = await loginClinician(credentials);
+      const { access_token, user_id, role } = await loginClinician(credentials);
       setAuthToken(access_token);
-      setUser(user);
+
+      await SecureStore.setItemAsync('access_token', access_token);
+      await SecureStore.setItemAsync('user_id', user_id);
+      await SecureStore.setItemAsync('role', role);
       return true;
     } catch (error: any) {
       setError(
@@ -45,5 +51,5 @@ export const useAuth = () => {
     }
   };
 
-  return { user, loading, error, handlePatientLogin, handleClinicianLogin };
+  return { loading, error, handlePatientLogin, handleClinicianLogin };
 };
