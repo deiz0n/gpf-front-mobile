@@ -53,7 +53,6 @@ export default function MedicalRecordsList() {
     const fetchRecords = async () => {
       if (!userId) return;
       const recordData = await handleGetRecordById(userId);
-      // recordData deve ter a estrutura: { universalMedicalRecord: { ..., specificMedicalRecordsIds: { ... } } }
       if (
         recordData &&
         recordData.universalMedicalRecord &&
@@ -78,9 +77,23 @@ export default function MedicalRecordsList() {
     Alert.alert("Erro", error);
   }
 
-  const handleView = () => {
-    console.log("Não implementado");
-    Alert.alert("Aviso", "Funcionalidade não implementada.");
+  const handleView = async (record: RecordItem) => {
+    const storedUserId = await SecureStore.getItemAsync("user_id");
+    let routeBase = "";
+    switch (record.type) {
+      case "Trauma Ortopédico":
+        routeBase = "trauma-orthopedic-record";
+        break;
+      case "Neurofuncional":
+        routeBase = "neurofunctional-record";
+        break;
+      case "Cardiorespiratório":
+        routeBase = "cardiorespiratory-record";
+        break;
+      default:
+        routeBase = "genericRecord";
+    }
+    router.push(`/specific-record/${routeBase}/view/${storedUserId}?editable=false`);
   };
 
   return (
@@ -89,14 +102,17 @@ export default function MedicalRecordsList() {
       <SafeAreaView style={styles.container}>
         <Text style={styles.title}>Fichas</Text>
         {loading ? (
-          <ActivityIndicator size="large" color="#2A5C4E"/>
+          <ActivityIndicator size="large" color="#2A5C4E" />
         ) : (
           <>
             {records.length > 0 ? (
               records.map((record) => (
                 <View key={record.id as string} style={styles.card}>
                   <Text style={styles.recordType}>{record.type}</Text>
-                  <TouchableOpacity style={styles.viewButton} onPress={handleView}>
+                  <TouchableOpacity
+                    style={styles.viewButton}
+                    onPress={() => handleView(record)}
+                  >
                     <Text style={styles.viewButtonText}>Visualizar</Text>
                   </TouchableOpacity>
                 </View>

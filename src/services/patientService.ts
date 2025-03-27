@@ -53,7 +53,6 @@ export const register = async (userData: any) => {
   }
 };
 
-// NÃO SERÁ USADO NO FRONT-END
 export const update = async (id: string, userData: any) => {
   try {
     const response = await api.put(`${ROUTE_URL}/${id}`, userData);

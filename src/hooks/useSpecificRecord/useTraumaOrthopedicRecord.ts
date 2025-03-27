@@ -1,40 +1,16 @@
 import { useState } from "react";
 import {
-  fetch,
   getById,
-  getByCpf,
-  getBySlug,
+  getByPatientId,
+  fetchByClinicianId,
   register,
   update,
-  remove,
-} from "../services/patientService";
+} from "../../services/specificRecordService/traumaOrthopedicRecordService";
 
-export const usePatient = () => {
+export const useTraumaOrthopedic = () => {
   const [data, setData] = useState<any | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-
-  const handleFetch = async (
-    direction?: string,
-    page?: number,
-    orderBy?: number
-  ) => {
-    setLoading(true);
-    try {
-      setError(null);
-      const response = await fetch(direction, page, orderBy);
-      setData(response);
-      return response;
-    } catch (error: any) {
-      setError(
-        `Code: ${error.statusCode} | Error: ${error.error} | Message: ${error.message}` ||
-          "Erro ao buscar pacientes"
-      );
-      return null;
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleGetById = async (id: string) => {
     setLoading(true);
@@ -46,7 +22,7 @@ export const usePatient = () => {
     } catch (error: any) {
       setError(
         `Code: ${error.statusCode} | Error: ${error.error} | Message: ${error.message}` ||
-          "Erro ao buscar paciente por ID"
+          "Erro ao buscar registro por ID"
       );
       return null;
     } finally {
@@ -54,17 +30,17 @@ export const usePatient = () => {
     }
   };
 
-  const handleGetByCpf = async (cpf: string) => {
+  const handleGetByPatientId = async (patientId: string) => {
     setLoading(true);
     try {
       setError(null);
-      const response = await getByCpf(cpf);
+      const response = await getByPatientId(patientId);
       setData(response);
       return response;
     } catch (error: any) {
       setError(
         `Code: ${error.statusCode} | Error: ${error.error} | Message: ${error.message}` ||
-          "Erro ao buscar paciente por CPF"
+          "Erro ao buscar registro por ID do paciente"
       );
       return null;
     } finally {
@@ -72,17 +48,17 @@ export const usePatient = () => {
     }
   };
 
-  const handleGetBySlug = async (slug: string) => {
+  const handleFetchByClinicianId = async (clinicianId: string) => {
     setLoading(true);
     try {
       setError(null);
-      const response = await getBySlug(slug);
+      const response = await fetchByClinicianId(clinicianId);
       setData(response);
       return response;
     } catch (error: any) {
       setError(
         `Code: ${error.statusCode} | Error: ${error.error} | Message: ${error.message}` ||
-          "Erro ao buscar paciente por slug"
+          "Erro ao buscar registros por ID do clínico"
       );
       return null;
     } finally {
@@ -90,11 +66,11 @@ export const usePatient = () => {
     }
   };
 
-  const handleRegister = async (userData: any) => {
+  const handleRegister = async (clinicianId: string, patientId: string, userData: any) => {
     setLoading(true);
     try {
       setError(null);
-      const response = await register(userData);
+      const response = await register(clinicianId, patientId, userData);
       setData(response);
       return response;
     } catch (error: any) {
@@ -107,7 +83,7 @@ export const usePatient = () => {
                     `• ${err.field}: ${err.message}`
                 )
                 .join("\n")
-            : error.error || "Erro ao registrar paciente")
+            : error.error || "Erro ao registrar registro")
       );
       return null;
     } finally {
@@ -125,26 +101,7 @@ export const usePatient = () => {
     } catch (error: any) {
       setError(
         `Code: ${error.statusCode} | Error: ${error.error} | Message: ${error.message}` ||
-          "Erro ao atualizar paciente"
-      );
-      return null;
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // NÃO SERÁ USADO NO FRONT-END
-  const handleRemove = async (id: string) => {
-    setLoading(true);
-    try {
-      setError(null);
-      const response = await remove(id);
-      setData(response);
-      return response;
-    } catch (error: any) {
-      setError(
-        `Code: ${error.statusCode} | Error: ${error.error} | Message: ${error.message}` ||
-          "Erro ao remover paciente"
+          "Erro ao atualizar registro"
       );
       return null;
     } finally {
@@ -156,12 +113,10 @@ export const usePatient = () => {
     data,
     loading,
     error,
-    handleFetch,
     handleGetById,
-    handleGetByCpf,
-    handleGetBySlug,
+    handleGetByPatientId,
+    handleFetchByClinicianId,
     handleRegister,
     handleUpdate,
-    handleRemove,
   };
 };
