@@ -22,7 +22,7 @@ export default function TraumaOrthopedicRecord() {
 
   useEffect(() => {
     const getUserType = async () => {
-      const userType = await SecureStore.getItemAsync("user_type");
+      const userType = await SecureStore.getItemAsync("role");
       setEditable(userType === "CLINICIAN" ? true : false);
     };
 

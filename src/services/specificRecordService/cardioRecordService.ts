@@ -20,10 +20,22 @@ export const getByPatientId = async (patientId: string) => {
   }
 };
 
-export const fetchByClinicianId = async (clinicianId: string) => {
+export const fetchByClinicianId = async (
+  clinicianId: string,
+  page?: number,
+  direction?: string,
+  orderBy?: number
+) => {
   try {
     const response = await api.get(
-      `${ROUTE_URL}/fetch-ids-by-clinician-id/${clinicianId}`
+      `${ROUTE_URL}/fetch-ids-by-clinician-id/${clinicianId}`,
+      {
+        params: {
+          direction: direction || undefined,
+          page: page || undefined,
+          orderBy: orderBy || undefined,
+        },
+      }
     );
     return response.data;
   } catch (error: any) {

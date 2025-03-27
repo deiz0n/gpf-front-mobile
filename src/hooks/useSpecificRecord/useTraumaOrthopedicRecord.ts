@@ -48,11 +48,11 @@ export const useTraumaOrthopedic = () => {
     }
   };
 
-  const handleFetchByClinicianId = async (clinicianId: string) => {
+  const handleFetchByClinicianId = async (clinicianId: string, page?: number) => {
     setLoading(true);
     try {
       setError(null);
-      const response = await fetchByClinicianId(clinicianId);
+      const response = await fetchByClinicianId(clinicianId, page);
       setData(response);
       return response;
     } catch (error: any) {
