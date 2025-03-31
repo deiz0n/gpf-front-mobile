@@ -9,14 +9,14 @@ export const useUniversalRecord = () => {
   const handleGetRecordById = async (userId: string) => {
     setLoading(true);
     try {
-        setError(null);
+      setError(null);
       const response = await getRecord(userId)
       setData(response);
       return response;
     } catch (error: any) {
       setError(
         `Code: ${error.statusCode} | Error: ${error.error} | Message: ${error.message}` ||
-          "Erro ao buscar prontuário"
+        "Erro ao buscar prontuário"
       );
       return null;
     } finally {
@@ -24,30 +24,30 @@ export const useUniversalRecord = () => {
     }
   };
 
-    const handleUpdate = async (userId: string, userData: any) => {
-      setLoading(true);
-      try {
-        setError(null);
-        const response = await editRecord(userId, userData);
-        setData(response);
-        return response;
-      } catch (error: any) {
-        setError(
-          `Code: ${error.statusCode} | Message: ${error.message}\n\n` +
-            (Array.isArray(error.errors)
-              ? error.errors
-                  .map(
-                    (err: { field: string; message: string }) =>
-                      `• ${err.field}: ${err.message}`
-                  )
-                  .join("\n")
-              : error.error || "Erro ao registrar paciente")
-        );
-        return null;
-      } finally {
-        setLoading(false);
-      }
-    };
+  const handleUpdate = async (userId: string, userData: any) => {
+    setLoading(true);
+    try {
+      setError(null);
+      const response = await editRecord(userId, userData);
+      setData(response);
+      return response;
+    } catch (error: any) {
+      setError(
+        `Code: ${error.statusCode} | Message: ${error.message}\n\n` +
+        (Array.isArray(error.errors)
+          ? error.errors
+            .map(
+              (err: { field: string; message: string }) =>
+                `• ${err.field}: ${err.message}`
+            )
+            .join("\n")
+          : error.error || "Erro ao registrar paciente")
+      );
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return {
     data,
