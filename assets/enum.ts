@@ -10,3 +10,10 @@ export enum RecordType {
   Neurofunctional = "Neurofuncional",
   Trauma = "Trauma Ortopédico",
 }
+
+export enum ColorType {
+  orange = 'Laranja',
+  yellow = 'Amarelo',
+  green = 'Verde',
+  blue = 'Azul',
+}
