@@ -28,7 +28,7 @@ export const useClinician = () => {
     } catch (error: any) {
       setError(
         `Code: ${error.statusCode} | Error: ${error.error} | Message: ${error.message}` ||
-          "Erro ao buscar clínicos"
+        "Erro ao buscar clínicos"
       );
       return null;
     } finally {
@@ -46,7 +46,7 @@ export const useClinician = () => {
     } catch (error: any) {
       setError(
         `Code: ${error.statusCode} | Error: ${error.error} | Message: ${error.message}` ||
-          "Erro ao buscar clínico por ID"
+        "Erro ao buscar clínico por ID"
       );
       return null;
     } finally {
@@ -64,7 +64,7 @@ export const useClinician = () => {
     } catch (error: any) {
       setError(
         `Code: ${error.statusCode} | Error: ${error.error} | Message: ${error.message}` ||
-          "Erro ao buscar clínico por CPF"
+        "Erro ao buscar clínico por CPF"
       );
       return null;
     } finally {
@@ -82,7 +82,7 @@ export const useClinician = () => {
     } catch (error: any) {
       setError(
         `Code: ${error.statusCode} | Error: ${error.error} | Message: ${error.message}` ||
-          "Erro ao buscar clínico por slug"
+        "Erro ao buscar clínico por slug"
       );
       return null;
     } finally {
@@ -100,14 +100,14 @@ export const useClinician = () => {
     } catch (error: any) {
       setError(
         `Code: ${error.statusCode} | Message: ${error.message}\n\n` +
-          (Array.isArray(error.errors)
-            ? error.errors
-                .map(
-                  (err: { field: string; message: string }) =>
-                    `• ${err.field}: ${err.message}`
-                )
-                .join("\n")
-            : error.error || "Erro ao registrar clínico")
+        (Array.isArray(error.errors)
+          ? error.errors
+            .map(
+              (err: { field: string; message: string }) =>
+                `• ${err.field}: ${err.message}`
+            )
+            .join("\n")
+          : error.error || "Erro ao registrar clínico")
       );
       return null;
     } finally {
@@ -126,7 +126,7 @@ export const useClinician = () => {
     } catch (error: any) {
       setError(
         `Code: ${error.statusCode} | Error: ${error.error} | Message: ${error.message}` ||
-          "Erro ao atualizar clínico"
+        "Erro ao atualizar clínico"
       );
       return null;
     } finally {
@@ -145,7 +145,7 @@ export const useClinician = () => {
     } catch (error: any) {
       setError(
         `Code: ${error.statusCode} | Error: ${error.error} | Message: ${error.message}` ||
-          "Erro ao remover clínico"
+        "Erro ao remover clínico"
       );
       return null;
     } finally {

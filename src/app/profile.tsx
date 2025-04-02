@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, Alert } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, Alert, TextInput } from "react-native";
 import { useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -9,9 +9,18 @@ import { useClinician } from "../hooks/useCliniciansRequest";
 export default function ProfileScreen() {
   const [role, setRole] = useState<"PATIENT" | "CLINICIAN" | null>(null);
   const { handleGetById: getPatientById, data: patientData, loading: loadingPatient } = usePatient();
-  const { handleGetById: getClinicianById, data: clinicianData, loading: loadingClinician } = useClinician();
+  const { handleGetById: getClinicianById, data: clinicianData, loading: loadingClinician, handleUpdate: updateClinician } = useClinician();
   const [loading, setLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+
   const router = useRouter();
+
+  const [name, setName] = useState("");
+  const [surname, setSurname] = useState("");
+  const [gender, setGender] = useState("");
+  const [occupation, setOccupation] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
     const loadData = async () => {
@@ -42,13 +51,39 @@ export default function ProfileScreen() {
     loadData();
   }, []);
 
+  const handleSave = async (role: String) => {
+    if (role === 'CLINICIAN' && clinicianData) {
+      const updatedDataClinician = {
+        name,
+        surname,
+        gender,
+        occupation,
+        phoneNumber,
+        email
+      };
+
+      try {
+        await updateClinician(clinicianData.clinician.id, updatedDataClinician);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  }
+
   const handleGoBack = () => {
     router.back();
   };
 
   const handleEdit = () => {
-    console.log("Não implementado");
-    Alert.alert("Aviso", "Funcionalidade não implementada.");
+    if (!isEditing && clinicianData) {
+      setName(clinicianData.clinician.name);
+      setSurname(clinicianData.clinician.surname);
+      setGender(clinicianData.clinician.gender);
+      setOccupation(clinicianData.clinician.occupation);
+      setPhoneNumber(clinicianData.clinician.phoneNumber);
+      setEmail(clinicianData.clinician.email);
+    }
+    setIsEditing(!isEditing);
   };
 
   const handleLogout = async () => {
@@ -98,47 +133,105 @@ export default function ProfileScreen() {
       />
 
       {role === "PATIENT" && patientData && (
-        <View style={styles.infoContainer}>
-          <Text style={styles.label}>Nome Completo:</Text>
-          <Text style={styles.value}>
-            {patientData.patient.name} {patientData.patient.surname}
-          </Text>
+        isEditing ? (
+          <>
+          </>
+        ) : (
+          <>
+            <View style={styles.infoContainer}>
+              <Text style={styles.label}>Nome Completo:</Text>
+              <Text style={styles.value}>
+                {patientData.patient.name} {patientData.patient.surname}
+              </Text>
 
-          <Text style={styles.label}>Gênero:</Text>
-          <Text style={styles.value}>{patientData.patient.gender}</Text>
+              <Text style={styles.label}>Gênero:</Text>
+              <Text style={styles.value}>{patientData.patient.gender}</Text>
 
-          <Text style={styles.label}>Telefone:</Text>
-          <Text style={styles.value}>{patientData.patient.phoneNumber}</Text>
+              <Text style={styles.label}>Telefone:</Text>
+              <Text style={styles.value}>{patientData.patient.phoneNumber}</Text>
 
-          <Text style={styles.label}>Endereço:</Text>
-          <Text style={styles.value}>
-            {patientData.patient.address}, {patientData.patient.city} - {patientData.patient.state}
-          </Text>
+              <Text style={styles.label}>Endereço:</Text>
+              <Text style={styles.value}>
+                {patientData.patient.address}, {patientData.patient.city} - {patientData.patient.state}
+              </Text>
 
-          <Text style={styles.label}>Email:</Text>
-          <Text style={styles.value}>{patientData.patient.email}</Text>
-        </View>
-      )}
+              <Text style={styles.label}>Email:</Text>
+              <Text style={styles.value}>{patientData.patient.email}</Text>
+            </View>
+          </>
+        ))}
 
       {role === "CLINICIAN" && clinicianData && (
-        <View style={styles.infoContainer}>
-          <Text style={styles.label}>Nome Completo:</Text>
-          <Text style={styles.value}>
-            {clinicianData.clinician.name} {clinicianData.clinician.surname}
-          </Text>
+        isEditing ? (
+          <>
+            <Text style={styles.label}>Nome Completo:</Text>
+            <TextInput
+              style={styles.input}
+              value={`${name} ${surname}`}
+              onChangeText={(text) => {
+                const [firstName, lastName] = text.split(" ");
+                setName(firstName || "");
+                setSurname(lastName || "");
+              }}
+            />
 
-          <Text style={styles.label}>Gênero:</Text>
-          <Text style={styles.value}>{clinicianData.clinician.gender}</Text>
+            <Text style={styles.label}>Gênero:</Text>
+            <TextInput
+              style={styles.input}
+              value={gender}
+              onChangeText={setGender}
+            />
 
-          <Text style={styles.label}>Telefone:</Text>
-          <Text style={styles.value}>{clinicianData.clinician.phoneNumber}</Text>
+            <Text style={styles.label}>Telefone:</Text>
+            <TextInput
+              style={styles.input}
+              value={phoneNumber}
+              onChangeText={setPhoneNumber}
+            />
 
-          <Text style={styles.label}>Especialização:</Text>
-          <Text style={styles.value}>{clinicianData.clinician.occupation}</Text>
+            <Text style={styles.label}>Especialização:</Text>
+            <TextInput
+              style={styles.input}
+              value={occupation}
+              onChangeText={setOccupation}
+            />
 
-          <Text style={styles.label}>Email:</Text>
-          <Text style={styles.value}>{clinicianData.clinician.email}</Text>
-        </View>
+            <Text style={styles.label}>Email:</Text>
+            <TextInput
+              style={styles.input}
+              value={email}
+              onChangeText={setEmail}
+            />
+
+            <TouchableOpacity
+              style={[styles.button, styles.editButton]}
+              onPress={() => handleSave("CLINICIAN")}
+            >
+              <Text style={styles.buttonText}>Salvar</Text>
+            </TouchableOpacity>
+          </>
+        ) : (
+          <>
+            <View style={styles.infoContainer}>
+              <Text style={styles.label}>Nome Completo:</Text>
+              <Text style={styles.value}>
+                {clinicianData.clinician.name} {clinicianData.clinician.surname}
+              </Text>
+
+              <Text style={styles.label}>Gênero:</Text>
+              <Text style={styles.value}>{clinicianData.clinician.gender}</Text>
+
+              <Text style={styles.label}>Telefone:</Text>
+              <Text style={styles.value}>{clinicianData.clinician.phoneNumber}</Text>
+
+              <Text style={styles.label}>Especialização:</Text>
+              <Text style={styles.value}>{clinicianData.clinician.occupation}</Text>
+
+              <Text style={styles.label}>Email:</Text>
+              <Text style={styles.value}>{clinicianData.clinician.email}</Text>
+            </View>
+          </>
+        )
       )}
 
       <View style={styles.buttonRow}>
@@ -211,4 +304,12 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "600",
   },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    padding: 8,
+    marginBottom: 10,
+    fontSize: 16,
+  }
 });
