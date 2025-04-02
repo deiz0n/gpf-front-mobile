@@ -8,7 +8,7 @@ import { useClinician } from "../hooks/useCliniciansRequest";
 
 export default function ProfileScreen() {
   const [role, setRole] = useState<"PATIENT" | "CLINICIAN" | null>(null);
-  const { handleGetById: getPatientById, data: patientData, loading: loadingPatient } = usePatient();
+  const { handleGetById: getPatientById, data: patientData, loading: loadingPatient, handleUpdate: updatePatient } = usePatient();
   const { handleGetById: getClinicianById, data: clinicianData, loading: loadingClinician, handleUpdate: updateClinician } = useClinician();
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
@@ -21,6 +21,9 @@ export default function ProfileScreen() {
   const [occupation, setOccupation] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
 
   useEffect(() => {
     const loadData = async () => {
@@ -67,7 +70,22 @@ export default function ProfileScreen() {
       } catch (error) {
         console.log(error);
       }
-    };
+
+    } else {
+      const updatedDataPatient = {
+        name,
+        surname,
+        phoneNumber,
+        address,
+        email
+      };
+
+      try {
+        await updatePatient(patientData.patient.id, updatedDataPatient);
+      } catch (error) {
+        console.log(error)
+      }
+    }
   }
 
   const handleGoBack = () => {
@@ -82,6 +100,16 @@ export default function ProfileScreen() {
       setOccupation(clinicianData.clinician.occupation);
       setPhoneNumber(clinicianData.clinician.phoneNumber);
       setEmail(clinicianData.clinician.email);
+    }
+    if (!isEditing && patientData) {
+      setName(patientData.patient.name);
+      setSurname(patientData.patient.surname);
+      setGender(patientData.patient.gender);
+      setPhoneNumber(patientData.patient.phoneNumber);
+      setAddress(patientData.patient.address);
+      setCity(patientData.patient.city);
+      setState(patientData.patient.state);
+      setEmail(patientData.patient.email);
     }
     setIsEditing(!isEditing);
   };
@@ -135,6 +163,56 @@ export default function ProfileScreen() {
       {role === "PATIENT" && patientData && (
         isEditing ? (
           <>
+            <Text style={styles.label}>Nome Completo:</Text>
+            <TextInput
+              style={styles.input}
+              value={`${name} ${surname}`}
+              onChangeText={(text) => {
+                const [firstName, lastName] = text.split(" ");
+                setName(firstName || "");
+                setSurname(lastName || "");
+              }}
+            />
+
+            <Text style={styles.label}>Gênero:</Text>
+            <TextInput
+              style={styles.input}
+              value={gender}
+              onChangeText={setGender}
+            />
+
+            <Text style={styles.label}>Telefone:</Text>
+            <TextInput
+              style={styles.input}
+              value={phoneNumber}
+              onChangeText={setPhoneNumber}
+            />
+
+            <Text style={styles.label}>Endereço:</Text>
+            <TextInput
+              style={styles.input}
+              value={`${address} ${city} ${state}`}
+              onChangeText={(text) => {
+                const [address, city, state] = text.split("");
+                setAddress(address || "");
+                setCity(city || "");
+                setState(state || "");
+              }}
+            />
+
+            <Text style={styles.label}>Email:</Text>
+            <TextInput
+              style={styles.input}
+              value={email}
+              onChangeText={setEmail}
+            />
+
+            <TouchableOpacity
+              style={[styles.button, styles.editButton]}
+              onPress={() => handleSave("PATIENT")}
+            >
+              <Text style={styles.buttonText}>Salvar</Text>
+            </TouchableOpacity>
           </>
         ) : (
           <>

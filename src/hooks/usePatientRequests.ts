@@ -28,7 +28,7 @@ export const usePatient = () => {
     } catch (error: any) {
       setError(
         `Code: ${error.statusCode} | Error: ${error.error} | Message: ${error.message}` ||
-          "Erro ao buscar pacientes"
+        "Erro ao buscar pacientes"
       );
       return null;
     } finally {
@@ -46,7 +46,7 @@ export const usePatient = () => {
     } catch (error: any) {
       setError(
         `Code: ${error.statusCode} | Error: ${error.error} | Message: ${error.message}` ||
-          "Erro ao buscar paciente por ID"
+        "Erro ao buscar paciente por ID"
       );
       return null;
     } finally {
@@ -64,7 +64,7 @@ export const usePatient = () => {
     } catch (error: any) {
       setError(
         `Code: ${error.statusCode} | Error: ${error.error} | Message: ${error.message}` ||
-          "Erro ao buscar paciente por CPF"
+        "Erro ao buscar paciente por CPF"
       );
       return null;
     } finally {
@@ -82,7 +82,7 @@ export const usePatient = () => {
     } catch (error: any) {
       setError(
         `Code: ${error.statusCode} | Error: ${error.error} | Message: ${error.message}` ||
-          "Erro ao buscar paciente por slug"
+        "Erro ao buscar paciente por slug"
       );
       return null;
     } finally {
@@ -100,14 +100,14 @@ export const usePatient = () => {
     } catch (error: any) {
       setError(
         `Code: ${error.statusCode} | Message: ${error.message}\n\n` +
-          (Array.isArray(error.errors)
-            ? error.errors
-                .map(
-                  (err: { field: string; message: string }) =>
-                    `• ${err.field}: ${err.message}`
-                )
-                .join("\n")
-            : error.error || "Erro ao registrar paciente")
+        (Array.isArray(error.errors)
+          ? error.errors
+            .map(
+              (err: { field: string; message: string }) =>
+                `• ${err.field}: ${err.message}`
+            )
+            .join("\n")
+          : error.error || "Erro ao registrar paciente")
       );
       return null;
     } finally {
@@ -125,7 +125,7 @@ export const usePatient = () => {
     } catch (error: any) {
       setError(
         `Code: ${error.statusCode} | Error: ${error.error} | Message: ${error.message}` ||
-          "Erro ao atualizar paciente"
+        "Erro ao atualizar paciente"
       );
       return null;
     } finally {
@@ -144,7 +144,7 @@ export const usePatient = () => {
     } catch (error: any) {
       setError(
         `Code: ${error.statusCode} | Error: ${error.error} | Message: ${error.message}` ||
-          "Erro ao remover paciente"
+        "Erro ao remover paciente"
       );
       return null;
     } finally {
