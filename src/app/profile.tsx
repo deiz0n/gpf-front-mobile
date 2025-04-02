@@ -314,13 +314,17 @@ export default function ProfileScreen() {
         )}
 
         <View style={styles.buttonRow}>
-          <TouchableOpacity style={[styles.button, styles.editButton]} onPress={handleEdit}>
-            <Text style={styles.buttonText}>Editar</Text>
-          </TouchableOpacity>
+          {!isEditing && (
+            <>
+              <TouchableOpacity style={[styles.button, styles.editButton]} onPress={handleEdit}>
+                <Text style={styles.buttonText}>Editar</Text>
+              </TouchableOpacity>
 
-          <TouchableOpacity style={[styles.button, styles.logoutButton]} onPress={handleLogout}>
-            <Text style={styles.buttonText}>Sair</Text>
-          </TouchableOpacity>
+              <TouchableOpacity style={[styles.button, styles.logoutButton]} onPress={handleLogout}>
+                <Text style={styles.buttonText}>Sair</Text>
+              </TouchableOpacity>
+            </>
+          )}
         </View>
       </View>
     </ScrollView>
