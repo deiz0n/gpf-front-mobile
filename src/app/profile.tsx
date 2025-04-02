@@ -210,7 +210,10 @@ export default function ProfileScreen() {
 
               <TouchableOpacity
                 style={[styles.button, styles.editButton]}
-                onPress={() => handleSave("PATIENT")}
+                onPress={() => {
+                  handleSave("PATIENT");
+                  setIsEditing(false);
+                }}
               >
                 <Text style={styles.buttonText}>Salvar</Text>
               </TouchableOpacity>
@@ -284,7 +287,10 @@ export default function ProfileScreen() {
 
               <TouchableOpacity
                 style={[styles.button, styles.editButton]}
-                onPress={() => handleSave("CLINICIAN")}
+                onPress={() => {
+                  handleSave("CLINICIAN");
+                  setIsEditing(false);
+                }}
               >
                 <Text style={styles.buttonText}>Salvar</Text>
               </TouchableOpacity>
