@@ -68,7 +68,7 @@ export default function ProfileScreen() {
       try {
         await updateClinician(clinicianData.clinician.id, updatedDataClinician);
       } catch (error) {
-        console.log(error);
+        handleUpdatedDataError();
       }
 
     } else {
@@ -83,7 +83,7 @@ export default function ProfileScreen() {
       try {
         await updatePatient(patientData.patient.id, updatedDataPatient);
       } catch (error) {
-        console.log(error)
+        handleUpdatedDataError();
       }
     }
   }
@@ -136,6 +136,32 @@ export default function ProfileScreen() {
       { cancelable: true }
     );
   };
+
+  const handleUpdatedDataSucesss = () => {
+    Alert.alert(
+      "Alterações concluidas",
+      "Seus dados foram alterados com sucesso",
+      [
+        {
+          text: "Ok",
+          style: "default"
+        }
+      ]
+    )
+  }
+
+  const handleUpdatedDataError = () => {
+    Alert.alert(
+      "Erro",
+      "Não foi possível alterar os dados. Tente novamente",
+      [
+        {
+          text: "Ok",
+          style: "default"
+        }
+      ]
+    )
+  }
 
   if (loading || loadingPatient || loadingClinician) {
     return (
@@ -212,6 +238,7 @@ export default function ProfileScreen() {
                 style={[styles.button, styles.editButton]}
                 onPress={() => {
                   handleSave("PATIENT");
+                  handleUpdatedDataSucesss();
                   setIsEditing(false);
                 }}
               >
@@ -289,6 +316,7 @@ export default function ProfileScreen() {
                 style={[styles.button, styles.editButton]}
                 onPress={() => {
                   handleSave("CLINICIAN");
+                  handleUpdatedDataSucesss();
                   setIsEditing(false);
                 }}
               >
