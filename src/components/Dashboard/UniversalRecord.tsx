@@ -156,7 +156,11 @@ export default function UniversalRecord({
         </Text>
         <Text style={styles.label}>
           Data de Nascimento:{" "}
-          <Text style={styles.value}>{patientData.patient.birthDate}</Text>
+          <Text style={styles.value}>
+            {new Date(patientData.patient.birthDate).toLocaleString("pt-BR", {
+              timeZone: "UTC",
+            })}
+          </Text>
         </Text>
         <Text style={styles.label}>
           Email: <Text style={styles.value}>{patientData.patient.email}</Text>
