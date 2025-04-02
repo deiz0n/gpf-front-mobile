@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, Alert, TextInput } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, Alert, TextInput, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -146,182 +146,184 @@ export default function ProfileScreen() {
   }
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
-        <Ionicons name="arrow-back" size={24} color="#000" />
-      </TouchableOpacity>
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <View style={styles.container}>
+        <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color="#000" />
+        </TouchableOpacity>
 
-      <Text style={styles.title}>Perfil</Text>
+        <Text style={styles.title}>Perfil</Text>
 
-      <Ionicons
-        name="person-circle-outline"
-        size={120}
-        color="#ccc"
-        style={{ marginVertical: 10, alignSelf: "center" }}
-      />
+        <Ionicons
+          name="person-circle-outline"
+          size={120}
+          color="#ccc"
+          style={{ marginVertical: 10, alignSelf: "center" }}
+        />
 
-      {role === "PATIENT" && patientData && (
-        isEditing ? (
-          <>
-            <Text style={styles.label}>Nome Completo:</Text>
-            <TextInput
-              style={styles.input}
-              value={`${name} ${surname}`}
-              onChangeText={(text) => {
-                const [firstName, lastName] = text.split(" ");
-                setName(firstName || "");
-                setSurname(lastName || "");
-              }}
-            />
-
-            <Text style={styles.label}>Gênero:</Text>
-            <TextInput
-              style={styles.input}
-              value={gender}
-              onChangeText={setGender}
-            />
-
-            <Text style={styles.label}>Telefone:</Text>
-            <TextInput
-              style={styles.input}
-              value={phoneNumber}
-              onChangeText={setPhoneNumber}
-            />
-
-            <Text style={styles.label}>Endereço:</Text>
-            <TextInput
-              style={styles.input}
-              value={`${address} ${city} ${state}`}
-              onChangeText={(text) => {
-                const [address, city, state] = text.split("");
-                setAddress(address || "");
-                setCity(city || "");
-                setState(state || "");
-              }}
-            />
-
-            <Text style={styles.label}>Email:</Text>
-            <TextInput
-              style={styles.input}
-              value={email}
-              onChangeText={setEmail}
-            />
-
-            <TouchableOpacity
-              style={[styles.button, styles.editButton]}
-              onPress={() => handleSave("PATIENT")}
-            >
-              <Text style={styles.buttonText}>Salvar</Text>
-            </TouchableOpacity>
-          </>
-        ) : (
-          <>
-            <View style={styles.infoContainer}>
+        {role === "PATIENT" && patientData && (
+          isEditing ? (
+            <>
               <Text style={styles.label}>Nome Completo:</Text>
-              <Text style={styles.value}>
-                {patientData.patient.name} {patientData.patient.surname}
-              </Text>
+              <TextInput
+                style={styles.input}
+                value={`${name} ${surname}`}
+                onChangeText={(text) => {
+                  const [firstName, lastName] = text.split(" ");
+                  setName(firstName || "");
+                  setSurname(lastName || "");
+                }}
+              />
 
               <Text style={styles.label}>Gênero:</Text>
-              <Text style={styles.value}>{patientData.patient.gender}</Text>
+              <TextInput
+                style={styles.input}
+                value={gender}
+                onChangeText={setGender}
+              />
 
               <Text style={styles.label}>Telefone:</Text>
-              <Text style={styles.value}>{patientData.patient.phoneNumber}</Text>
+              <TextInput
+                style={styles.input}
+                value={phoneNumber}
+                onChangeText={setPhoneNumber}
+              />
 
               <Text style={styles.label}>Endereço:</Text>
-              <Text style={styles.value}>
-                {patientData.patient.address}, {patientData.patient.city} - {patientData.patient.state}
-              </Text>
+              <TextInput
+                style={styles.input}
+                value={`${address} ${city} ${state}`}
+                onChangeText={(text) => {
+                  const [address, city, state] = text.split("");
+                  setAddress(address || "");
+                  setCity(city || "");
+                  setState(state || "");
+                }}
+              />
 
               <Text style={styles.label}>Email:</Text>
-              <Text style={styles.value}>{patientData.patient.email}</Text>
-            </View>
-          </>
-        ))}
+              <TextInput
+                style={styles.input}
+                value={email}
+                onChangeText={setEmail}
+              />
 
-      {role === "CLINICIAN" && clinicianData && (
-        isEditing ? (
-          <>
-            <Text style={styles.label}>Nome Completo:</Text>
-            <TextInput
-              style={styles.input}
-              value={`${name} ${surname}`}
-              onChangeText={(text) => {
-                const [firstName, lastName] = text.split(" ");
-                setName(firstName || "");
-                setSurname(lastName || "");
-              }}
-            />
+              <TouchableOpacity
+                style={[styles.button, styles.editButton]}
+                onPress={() => handleSave("PATIENT")}
+              >
+                <Text style={styles.buttonText}>Salvar</Text>
+              </TouchableOpacity>
+            </>
+          ) : (
+            <>
+              <View style={styles.infoContainer}>
+                <Text style={styles.label}>Nome Completo:</Text>
+                <Text style={styles.value}>
+                  {patientData.patient.name} {patientData.patient.surname}
+                </Text>
 
-            <Text style={styles.label}>Gênero:</Text>
-            <TextInput
-              style={styles.input}
-              value={gender}
-              onChangeText={setGender}
-            />
+                <Text style={styles.label}>Gênero:</Text>
+                <Text style={styles.value}>{patientData.patient.gender}</Text>
 
-            <Text style={styles.label}>Telefone:</Text>
-            <TextInput
-              style={styles.input}
-              value={phoneNumber}
-              onChangeText={setPhoneNumber}
-            />
+                <Text style={styles.label}>Telefone:</Text>
+                <Text style={styles.value}>{patientData.patient.phoneNumber}</Text>
 
-            <Text style={styles.label}>Especialização:</Text>
-            <TextInput
-              style={styles.input}
-              value={occupation}
-              onChangeText={setOccupation}
-            />
+                <Text style={styles.label}>Endereço:</Text>
+                <Text style={styles.value}>
+                  {patientData.patient.address}, {patientData.patient.city} - {patientData.patient.state}
+                </Text>
 
-            <Text style={styles.label}>Email:</Text>
-            <TextInput
-              style={styles.input}
-              value={email}
-              onChangeText={setEmail}
-            />
+                <Text style={styles.label}>Email:</Text>
+                <Text style={styles.value}>{patientData.patient.email}</Text>
+              </View>
+            </>
+          ))}
 
-            <TouchableOpacity
-              style={[styles.button, styles.editButton]}
-              onPress={() => handleSave("CLINICIAN")}
-            >
-              <Text style={styles.buttonText}>Salvar</Text>
-            </TouchableOpacity>
-          </>
-        ) : (
-          <>
-            <View style={styles.infoContainer}>
+        {role === "CLINICIAN" && clinicianData && (
+          isEditing ? (
+            <>
               <Text style={styles.label}>Nome Completo:</Text>
-              <Text style={styles.value}>
-                {clinicianData.clinician.name} {clinicianData.clinician.surname}
-              </Text>
+              <TextInput
+                style={styles.input}
+                value={`${name} ${surname}`}
+                onChangeText={(text) => {
+                  const [firstName, lastName] = text.split(" ");
+                  setName(firstName || "");
+                  setSurname(lastName || "");
+                }}
+              />
 
               <Text style={styles.label}>Gênero:</Text>
-              <Text style={styles.value}>{clinicianData.clinician.gender}</Text>
+              <TextInput
+                style={styles.input}
+                value={gender}
+                onChangeText={setGender}
+              />
 
               <Text style={styles.label}>Telefone:</Text>
-              <Text style={styles.value}>{clinicianData.clinician.phoneNumber}</Text>
+              <TextInput
+                style={styles.input}
+                value={phoneNumber}
+                onChangeText={setPhoneNumber}
+              />
 
               <Text style={styles.label}>Especialização:</Text>
-              <Text style={styles.value}>{clinicianData.clinician.occupation}</Text>
+              <TextInput
+                style={styles.input}
+                value={occupation}
+                onChangeText={setOccupation}
+              />
 
               <Text style={styles.label}>Email:</Text>
-              <Text style={styles.value}>{clinicianData.clinician.email}</Text>
-            </View>
-          </>
-        )
-      )}
+              <TextInput
+                style={styles.input}
+                value={email}
+                onChangeText={setEmail}
+              />
 
-      <View style={styles.buttonRow}>
-        <TouchableOpacity style={[styles.button, styles.editButton]} onPress={handleEdit}>
-          <Text style={styles.buttonText}>Editar</Text>
-        </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.button, styles.editButton]}
+                onPress={() => handleSave("CLINICIAN")}
+              >
+                <Text style={styles.buttonText}>Salvar</Text>
+              </TouchableOpacity>
+            </>
+          ) : (
+            <>
+              <View style={styles.infoContainer}>
+                <Text style={styles.label}>Nome Completo:</Text>
+                <Text style={styles.value}>
+                  {clinicianData.clinician.name} {clinicianData.clinician.surname}
+                </Text>
 
-        <TouchableOpacity style={[styles.button, styles.logoutButton]} onPress={handleLogout}>
-          <Text style={styles.buttonText}>Sair</Text>
-        </TouchableOpacity>
+                <Text style={styles.label}>Gênero:</Text>
+                <Text style={styles.value}>{clinicianData.clinician.gender}</Text>
+
+                <Text style={styles.label}>Telefone:</Text>
+                <Text style={styles.value}>{clinicianData.clinician.phoneNumber}</Text>
+
+                <Text style={styles.label}>Especialização:</Text>
+                <Text style={styles.value}>{clinicianData.clinician.occupation}</Text>
+
+                <Text style={styles.label}>Email:</Text>
+                <Text style={styles.value}>{clinicianData.clinician.email}</Text>
+              </View>
+            </>
+          )
+        )}
+
+        <View style={styles.buttonRow}>
+          <TouchableOpacity style={[styles.button, styles.editButton]} onPress={handleEdit}>
+            <Text style={styles.buttonText}>Editar</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[styles.button, styles.logoutButton]} onPress={handleLogout}>
+            <Text style={styles.buttonText}>Sair</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
