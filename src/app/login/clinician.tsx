@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, ActivityIndicator, Alert } from "react-native";
+import { StyleSheet, Text, View, ActivityIndicator, Alert, ScrollView } from "react-native";
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 
 import { ConfirmationButton } from "../../components/Button";
@@ -25,20 +25,15 @@ export default function Login() {
       console.log("ERRO:", error);
     }
   }, [error]);
-  
+
   if (!fontsLoaded) {
     return <ActivityIndicator size="large" />;
   }
 
   const handleSubmit = async () => {
     try {
-      const success = await handleClinicianLogin({ email, password });
-      if (success) {
-        console.log("Sucesso", "Clínico logado com sucesso!");
-        Alert.alert("Sucesso", "Clínico logado com sucesso!", [
-          { text: "OK", onPress: () => router.replace("/dashboard/clinician") },
-        ]);
-      }
+      await handleClinicianLogin({ email, password });
+      router.replace("/dashboard/clinician")
     } catch (error) {
       Alert.alert(
         "Erro",
@@ -49,35 +44,37 @@ export default function Login() {
   };
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView>
-        <View style={styles.container}>
-          {LogoGPF()}
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      <SafeAreaProvider>
+        <SafeAreaView>
+          <View style={styles.container}>
+            {LogoGPF()}
 
-          {MainText(
-            "Entre com E-mail",
-            "Insira seu e-mail e senha que foram adicionados no cadastro"
-          )}
+            {MainText(
+              "Entre com E-mail",
+              "Insira seu e-mail e senha que foram adicionados no cadastro"
+            )}
 
-          <InputField label="Email" value={email} onChangeText={setEmail} />
+            <InputField label="Email" value={email} onChangeText={setEmail} />
 
-          <PasswordInput
-            value={password}
-            label="Senha"
-            onChangeText={setPassword}
-          />
+            <PasswordInput
+              value={password}
+              label="Senha"
+              onChangeText={setPassword}
+            />
 
-          {/* <Link url='#' style={styles.recovery}>Esqueceu sua senha?</Link> */}
-          {loading && <ActivityIndicator size="large" color="#0000ff" />}
-          <ConfirmationButton onPress={() => handleSubmit()} />
+            {/* <Link url='#' style={styles.recovery}>Esqueceu sua senha?</Link> */}
+            {loading && <ActivityIndicator size="large" color="#0000ff" />}
+            <ConfirmationButton onPress={() => handleSubmit()} />
 
-          <Text style={styles.createAccount}>Não possui uma conta?</Text>
-          <Link url="/register/clinician" style={{ color: "#2A5C4E" }}>
-            Cadastre-se
-          </Link>
-        </View>
-      </SafeAreaView>
-    </SafeAreaProvider>
+            <Text style={styles.createAccount}>Não possui uma conta?</Text>
+            <Link url="/register/clinician" style={{ color: "#2A5C4E" }}>
+              Cadastre-se
+            </Link>
+          </View>
+        </SafeAreaView>
+      </SafeAreaProvider>
+    </ScrollView>
   );
 }
 
