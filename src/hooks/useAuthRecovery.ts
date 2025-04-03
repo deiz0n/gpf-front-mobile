@@ -10,10 +10,8 @@ export const useAuthRecovery = () => {
     setLoading(true);
     try {
       setError(null);
-      console.log("email", email);
       const response = await forgotPassword(email);
-      console.log("response", response);
-      return response
+      return response;
     } catch (error: any) {
       setError(
         `Code: ${error.statusCode} | Error: ${error.error} | Message: ${error.message}` ||
@@ -29,16 +27,33 @@ export const useAuthRecovery = () => {
     setLoading(true);
     try {
       setError(null);
-      await resetPassword(token, newPassword);
+      const response = await resetPassword(token, newPassword);
       await SecureStore.deleteItemAsync("access_token");
       await SecureStore.deleteItemAsync("user_id");
       await SecureStore.deleteItemAsync("role");
-      return true;
+      return response;
     } catch (error: any) {
-      setError(
-        `Code: ${error.statusCode} | Error: ${error.error} | Message: ${error.message}` ||
-          "Erro ao atualizar senha"
-      );
+      let errorMessage = `Code: ${error.statusCode} | Message: ${error.message}`;
+
+      if (error.statusCode === 400 && Array.isArray(error.errors)) {
+        const validationErrors = error.errors
+          .map(
+            (err: { field: string; message: string }) =>
+              `• ${err.field}: ${err.message}`
+          )
+          .join("\n");
+        errorMessage += "\n" + validationErrors;
+      }
+
+      else if (error.statusCode === 401) {
+        errorMessage += "\nToken inválido ou expirado";
+      }
+      
+      else {
+        errorMessage += "\n" + (error.error || "Erro ao mudar senha");
+      }
+
+      setError(errorMessage);
       return false;
     } finally {
       setLoading(false);

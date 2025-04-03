@@ -9,9 +9,9 @@ export const forgotPassword = async (email: string) => {
   }
 };
 
-export const resetPassword = async (token: string, newPassword: string) => {
+export const resetPassword = async (token: string, password: string) => {
   try {
-    const response = await api.patch(`/auth/reset-password/${token}`, newPassword);
+    const response = await api.patch(`/auth/reset-password/${token}`, { password });
     return response.data;
   } catch (error: any) {
     throw error.response ? error.response.data : error;

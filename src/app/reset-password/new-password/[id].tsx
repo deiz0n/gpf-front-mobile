@@ -2,38 +2,48 @@ import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
-  TextInput,
   StyleSheet,
   TouchableOpacity,
   Alert,
   ActivityIndicator,
 } from "react-native";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { useAuthRecovery } from "../../hooks/useAuthRecovery";
+import { useAuthRecovery } from "../../../hooks/useAuthRecovery";
+import { PasswordInput } from "../../../components/PasswordInput";
 
 export default function ForgotPassword() {
+  const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const { loading, handleForgotPassword } = useAuthRecovery();
+  const [password, setPassword] = useState("");
+  const { loading, error, handleResetPassword } = useAuthRecovery();
 
   const handleSubmit = async () => {
-    if (!email) {
-      Alert.alert("Erro", "Email em branco.");
+    if (!password) {
+      Alert.alert("Erro", "A senha não pode ficar em branco.");
       return;
     }
 
-    try {
-      const response = await handleForgotPassword(email);
-      Alert.alert("Aviso", response.message, [
-        { text: "OK", onPress: () => router.replace("/user-type") },
+    const response = await handleResetPassword(id, password);
+
+    if (response && response.message === "Successfully reset password") {
+      Alert.alert("Sucesso", "Sua senha foi atualizada com sucesso.", [
+        {
+          text: "OK",
+          onPress: () => router.replace("/user-type"),
+        },
       ]);
-      return;
-    } catch (error) {
-      const errorMessage = "Ocorreu um erro ao buscar o paciente.";
-      Alert.alert("Erro", error?.toString() ?? errorMessage);
+    } else {
+      const errorMsg = response?.message || "Não foi possível atualizar a senha.";
+      Alert.alert("Aviso", errorMsg);
     }
   };
+
+  useEffect(() => {
+    if (error) {
+      Alert.alert("Erro", error);
+    }
+  }, [error]);
 
   return (
     <View style={styles.container}>
@@ -41,14 +51,12 @@ export default function ForgotPassword() {
         <Ionicons name="arrow-back" size={24} color="#000" />
       </TouchableOpacity>
 
-      <Text style={styles.title}>Esqueceu a senha? </Text>
+      <Text style={styles.title}>Insira sua nova senha</Text>
 
-      <Text style={styles.label}>Insira seu email:</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Digite o email"
-        value={email}
-        onChangeText={setEmail}
+      <PasswordInput
+        value={password}
+        label="Senha"
+        onChangeText={setPassword}
       />
 
       <TouchableOpacity
@@ -79,19 +87,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 20,
-  },
-  label: {
-    fontSize: 14,
-    marginBottom: 5,
-  },
-  input: {
-    height: 48,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    backgroundColor: "#E5E5E5",
-    paddingHorizontal: 10,
-    marginBottom: 15,
   },
   submitButton: {
     backgroundColor: "#2A5C4E",
