@@ -60,8 +60,7 @@ export default function TraumaList() {
   };
 
   const handleCreateRecord = () => {
-    console.log("Não implementado");
-    Alert.alert("Aviso", "Funcionalidade não implementada.");
+    router.push(`/specific-record/search-patient/trauma`);
   };
 
   return (

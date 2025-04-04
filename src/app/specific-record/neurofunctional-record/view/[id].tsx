@@ -51,7 +51,7 @@ export default function NeurofunctionalRecord() {
   }
 
   const handleEdit = () => {
-    Alert.alert("Aviso", "Funcionalidade não implementada.");
+    router.push(`/specific-record/neurofunctional-record/edit/${data.record.id}`);
   };
 
   const formatValue = (value: any) =>

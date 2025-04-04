@@ -62,7 +62,7 @@ export const register = async (
 
 export const update = async (id: string, userData: any) => {
   try {
-    const response = await api.post(`${ROUTE_URL}/${id}`, userData);
+    const response = await api.put(`${ROUTE_URL}/${id}`, userData);
     return response.data;
   } catch (error: any) {
     throw error.response ? error.response.data : error;
