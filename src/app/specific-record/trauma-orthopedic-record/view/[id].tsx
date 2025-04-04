@@ -51,7 +51,7 @@ export default function TraumaOrthopedicRecord() {
   }
 
   const handleEdit = () => {
-    Alert.alert("Aviso", "Funcionalidade não implementada.");
+    router.push(`/specific-record/trauma-orthopedic-record/edit/${data.record.id}`);
   };
 
   const formatValue = (value: any) =>

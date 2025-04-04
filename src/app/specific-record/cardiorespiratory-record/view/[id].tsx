@@ -51,7 +51,7 @@ export default function CardiorespiratoryRecord() {
   }
 
   const handleEdit = () => {
-    Alert.alert("Aviso", "Funcionalidade não implementada.");
+    router.push(`/specific-record/cardiorespiratory-record/edit/${data.record.id}`);
   };
 
   const formatValue = (value: any) =>
