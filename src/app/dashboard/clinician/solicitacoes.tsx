@@ -29,10 +29,20 @@ export default function Solicitacoes() {
   }, []);
 
   const handleViewRecord = (recordType: string, recordId: string) => {
-    Alert.alert(
-      "Visualizar",
-      `Não implementado. Record Type: ${recordType}\nRecord ID: ${recordId}`
-    );
+    console.log(recordType, recordId);
+    switch (recordType) {
+      case "Trauma":
+        router.push(`/specific-record/trauma-orthopedic-record/view/${recordId}`);
+        break;
+      case "Neurofunctional":
+        router.push(`/specific-record/neurofunctional-record/view/${recordId}`);
+        break;
+      case "Cardio":
+        router.push(`/specific-record/cardiorespiratory-record/view/${recordId}`);
+        break;
+      default:
+        Alert.alert("Erro", "Tipo de registro desconhecido.");
+    }
   };
 
   const handleSubmit = () => {
@@ -67,7 +77,7 @@ export default function Solicitacoes() {
                 <TouchableOpacity
                   style={styles.viewButton}
                   onPress={() =>
-                    handleViewRecord(item.recordType, item.recordId)
+                    handleViewRecord(item.recordType, item.patientId)
                   }
                 >
                   <Text style={styles.viewButtonText}>Visualizar</Text>

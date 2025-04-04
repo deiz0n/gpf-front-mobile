@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "gpf",
+    "name": "Gestão de Projetos de Fisioterapia",
     "slug": "gpf",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/images/logo.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "scheme": "blackwell",
