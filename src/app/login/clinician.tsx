@@ -63,7 +63,7 @@ export default function Login() {
               onChangeText={setPassword}
             />
 
-            {/* <Link url='#' style={styles.recovery}>Esqueceu sua senha?</Link> */}
+            <Link url="/reset-password/forgot-password" style={styles.recovery}>Esqueceu sua senha?</Link>
             {loading && <ActivityIndicator size="large" color="#0000ff" />}
             <ConfirmationButton onPress={() => handleSubmit()} />
 
