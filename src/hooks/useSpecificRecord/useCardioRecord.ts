@@ -5,7 +5,13 @@ import {
   fetchByClinicianId,
   register,
   update,
+  exportPdf,
 } from "../../services/specificRecordService/cardioRecordService";
+import * as FileSystem from 'expo-file-system';
+import * as Sharing from 'expo-sharing';
+import { Platform } from 'react-native';
+import * as MediaLibrary from 'expo-media-library';
+import * as IntentLauncher from 'expo-intent-launcher';
 
 export const useCardio = () => {
   const [data, setData] = useState<any | null>(null);
@@ -109,6 +115,55 @@ export const useCardio = () => {
     }
   };
 
+  const handleExportPdf = async (id: string) => {
+    setLoading(true);
+    try {
+      setError(null);
+      const response = await exportPdf(id);
+
+      // 1. Converter Blob para Base64
+      const base64Data = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve((reader.result as string).split(',')[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(response.data);
+      });
+
+      // 2. Salvar no cache
+      const fileUri = FileSystem.cacheDirectory + response.filename;
+      await FileSystem.writeAsStringAsync(fileUri, base64Data, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+
+      // 3. Plataforma específica
+      if (Platform.OS === 'android') {
+        // Android: Abrir com visualizador de PDF
+        const contentUri = await FileSystem.getContentUriAsync(fileUri);
+        await IntentLauncher.startActivityAsync('android.intent.action.VIEW', {
+          data: contentUri,
+          type: 'application/pdf',
+          flags: 1, // FLAG_GRANT_READ_URI_PERMISSION
+        });
+      } else {
+        // iOS: Compartilhar (inclui opção de salvar)
+        await Sharing.shareAsync(fileUri, {
+          mimeType: 'application/pdf',
+          UTI: 'com.adobe.pdf',
+        });
+      }
+
+      return true;
+    } catch (error: any) {
+      setError(
+        error.message ||
+        `Code: ${error.statusCode || '500'} | Erro ao exportar PDF`
+      );
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     data,
     loading,
@@ -118,5 +173,6 @@ export const useCardio = () => {
     handleFetchByClinicianId,
     handleRegister,
     handleUpdate,
+    handleExportPdf,
   };
 };

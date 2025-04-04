@@ -17,7 +17,7 @@ export default function TraumaOrthopedicRecord() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const [loading, setLoading] = useState(true);
   const [editable, setEditable] = useState(true);
-  const { data, error, handleGetByPatientId } = useTraumaOrthopedic();
+  const { data, error, handleGetByPatientId, handleExportPdf } = useTraumaOrthopedic();
   const router = useRouter();
 
   useEffect(() => {
@@ -53,6 +53,10 @@ export default function TraumaOrthopedicRecord() {
   const handleEdit = () => {
     router.push(`/specific-record/trauma-orthopedic-record/edit/${data.record.id}`);
   };
+  
+  async function downloadPdf(id: string) {
+    await handleExportPdf(id)
+  }
 
   const formatValue = (value: any) =>
     value !== undefined && value !== ""
@@ -189,7 +193,7 @@ export default function TraumaOrthopedicRecord() {
       )}
 
       {record.subjectivePainAssessment && (
-        <View style={styles.section}>
+        <><View style={styles.section}>
           <Text style={styles.sectionTitle}>Avaliação Subjetiva da Dor</Text>
           <Text style={styles.label}>
             Intensidade:{" "}
@@ -209,7 +213,9 @@ export default function TraumaOrthopedicRecord() {
               {formatValue(record.subjectivePainAssessment.characteristic)}
             </Text>
           </Text>
-        </View>
+        </View><TouchableOpacity onPress={() => downloadPdf(record.id)}>
+            <Text style={styles.downloadButton}>Download PDF</Text>
+          </TouchableOpacity></>
       )}
     </ScrollView>
   );
@@ -239,6 +245,17 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     color: "white",
     fontWeight: "bold",
+  },
+  downloadButton: {
+    fontSize: 20,
+    textAlign: "center",
+    backgroundColor: "#2A5C4E",
+    padding: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    color: "white",
+    fontWeight: "bold",
+    marginBottom:30
   },
   section: {
     marginBottom: 20,

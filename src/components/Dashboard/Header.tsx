@@ -19,9 +19,9 @@ export const Header = () => {
     <View style={styles.container}>
       <Image source={require("../../../assets/images/logo.png")} style={styles.logo} />
       <View style={styles.iconsContainer}>
-        <TouchableOpacity onPress={onNotificationsPress}>
+        {/* <TouchableOpacity onPress={onNotificationsPress}>
           <MaterialIcons name="notifications" size={28} color="gray" />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity onPress={onProfilePress}>
           <MaterialIcons name="account-circle" size={28} color="#2F5D4E" />
         </TouchableOpacity>

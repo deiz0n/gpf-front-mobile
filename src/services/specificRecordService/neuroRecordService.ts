@@ -68,3 +68,24 @@ export const update = async (id: string, userData: any) => {
     throw error.response ? error.response.data : error;
   }
 };
+
+export const exportPdf = async (id: string) => {
+  try {
+    const response = await api.get(`${ROUTE_URL}/export-pdf/${id}`, {
+      responseType: 'blob', // Axios no React Native suporta blob
+    });
+
+    // Extrai o filename do header
+    const contentDisposition = response.headers['content-disposition'];
+    const filename = contentDisposition
+      ? contentDisposition.split('filename=')[1].replace(/"/g, '')
+      : `record-cardio-${id}.pdf`;
+
+    return {
+      data: response.data,
+      filename
+    };
+  } catch (error: any) {
+    throw error.response ? error.response.data : error;
+  }
+};

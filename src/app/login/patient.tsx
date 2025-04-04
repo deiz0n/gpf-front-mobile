@@ -32,8 +32,10 @@ export default function Login() {
 
   const handleSubmit = async () => {
     try {
-      await handlePatientLogin({ email, password });
-      router.replace("/dashboard/patient")
+      const success = await handlePatientLogin({ email, password });
+      if (success){
+        router.replace("/dashboard/patient")
+      }
     } catch (error) {
       Alert.alert(
         "Erro",

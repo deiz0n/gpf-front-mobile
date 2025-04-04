@@ -17,7 +17,7 @@ export default function CardiorespiratoryRecord() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const [loading, setLoading] = useState(true);
   const [editable, setEditable] = useState(true);
-  const { data, error, handleGetByPatientId } = useCardio();
+  const { data, error, handleGetByPatientId, handleExportPdf } = useCardio();
   const router = useRouter();
 
   useEffect(() => {
@@ -60,6 +60,10 @@ export default function CardiorespiratoryRecord() {
       : "Nenhum cadastrado";
 
   const { record } = data;
+
+  async function downloadPdf(id: string) {
+    await handleExportPdf(id)
+  }
 
   return (
     <ScrollView style={styles.container}>
@@ -284,7 +288,7 @@ export default function CardiorespiratoryRecord() {
 
       {/* Seção 7: Avaliação Cardiofuncional */}
       {record.cardiofunctionalAssessment && (
-        <View style={styles.section}>
+        <><View style={styles.section}>
           <Text style={styles.sectionTitle}>Avaliação Cardiofuncional</Text>
           <Text style={styles.label}>
             IMC:{" "}
@@ -327,6 +331,11 @@ export default function CardiorespiratoryRecord() {
               </Text>
             )}
         </View>
+        <TouchableOpacity onPress={() => downloadPdf(record.id)}>
+          <Text style={styles.downloadButton}>Download PDF</Text>
+        </TouchableOpacity>
+        
+      </>
       )}
     </ScrollView>
   );
@@ -359,6 +368,17 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     color: "white",
     fontWeight: "bold",
+  },
+  downloadButton: {
+    fontSize: 20,
+    textAlign: "center",
+    backgroundColor: "#2A5C4E",
+    padding: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    color: "white",
+    fontWeight: "bold",
+    marginBottom:30
   },
   section: {
     marginBottom: 20,

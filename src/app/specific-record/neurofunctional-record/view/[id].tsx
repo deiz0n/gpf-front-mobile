@@ -17,7 +17,7 @@ export default function NeurofunctionalRecord() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const [loading, setLoading] = useState(true);
   const [editable, setEditable] = useState(true);
-  const { data, error, handleGetByPatientId } = useNeuro();
+  const { data, error, handleGetByPatientId, handleExportPdf } = useNeuro();
   const router = useRouter();
 
   useEffect(() => {
@@ -53,6 +53,11 @@ export default function NeurofunctionalRecord() {
   const handleEdit = () => {
     router.push(`/specific-record/neurofunctional-record/edit/${data.record.id}`);
   };
+
+  async function downloadPdf(id: string) {
+    await handleExportPdf(id)
+  }
+
 
   const formatValue = (value: any) =>
     value !== undefined && value !== "" && value !== null
@@ -339,7 +344,7 @@ export default function NeurofunctionalRecord() {
 
       {/* Seção 8: Avaliação Fisioterapêutica */}
       {record.physiotherapyAssessment && (
-        <View style={styles.section}>
+        <><View style={styles.section}>
           <Text style={styles.sectionTitle}>Avaliação Fisioterapêutica</Text>
           <Text style={styles.label}>
             Diagnóstico:{" "}
@@ -359,7 +364,9 @@ export default function NeurofunctionalRecord() {
               {formatValue(record.physiotherapyAssessment.physiotherapeuticConduct)}
             </Text>
           </Text>
-        </View>
+        </View><TouchableOpacity onPress={() => downloadPdf(record.id)}>
+            <Text style={styles.downloadButton}>Download PDF</Text>
+          </TouchableOpacity></>
       )}
     </ScrollView>
   );
@@ -392,6 +399,17 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     color: "white",
     fontWeight: "bold",
+  },
+  downloadButton: {
+    fontSize: 20,
+    textAlign: "center",
+    backgroundColor: "#2A5C4E",
+    padding: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    color: "white",
+    fontWeight: "bold",
+    marginBottom:30
   },
   section: {
     marginBottom: 20,
